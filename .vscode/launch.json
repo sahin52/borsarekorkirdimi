@@ -14,9 +14,9 @@
                 "FLASK_DEBUG": "1"
             },
             "args": [
-                "run",
-                "--no-debugger",
-                "--no-reload"
+                "run"
+                ,"--no-debugger"
+                // ,"--no-reload"
             ],
             "jinja": true,
             "autoStartBrowser": false

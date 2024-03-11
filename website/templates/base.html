@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Borsa bugün rekor kırdı mı?</title>
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <link rel="icon" href="{{ url_for('static', filename='stock_rising.png') }}" />
+    <link rel="icon" href="{{ url_for('static', filename='icon.png') }}" />
     <style>
       a {
         color: #fdfeff;
@@ -28,10 +28,22 @@
         <h1>Borsa bugün rekor kırdı mı?</h1>
 
 
-        <h3>Şimdilik Hayır<br /><br /><img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExam5kc3FueG1odXRyM3FqdjVqNWx4ZG1yYXBkMmxqa2Z3a2JveDdmeCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/se5RgFVR3GgfjynNlb/giphy.gif" /></h3>
-        <h6>Şimdi BIST100 = 9.155,32 <small>(Rekora %0.24 kala)</small></h6>
-        <h5>Güniçi Rekor BIST100 =  9.159,32 </h5>
-        <h4>Tüm zamanlar Rekor BIST100 =  9.288,32 (08.03.2024)</h4>
+        <h3>{% if data[1] >= data[2] %}
+          Rekor kırdı
+      {% else  %}
+          Rekor kırmadı
+      {% endif %} <br /><br />
+      {% if data[1] >= data[2] %}
+      <img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExOXB3YXo2YzU2c2F3MjB0Zm9wczlwbmdhdDAwc2V1a2p5cHNzNnhrOCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/AiULidifE382HGxt5U/giphy.gif" />
+      
+      {% else  %}
+      
+      <img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExam5kc3FueG1odXRyM3FqdjVqNWx4ZG1yYXBkMmxqa2Z3a2JveDdmeCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/se5RgFVR3GgfjynNlb/giphy.gif" />
+      {% endif %}
+    </h3>
+        <h6>Şimdi BIST100 = {{data[0]|round(2)}}</h6>
+        <h5>Güniçi Rekor BIST100 = {{data[1]|round(2)}}  </h5>
+        <h4>Tüm zamanlar Rekor BIST100 =  {{data[2]|round(2)}} ( {{data[3]}} ) </h4>
       </center>
     </div>
   </body>
