@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, send_from_directory
 import yfinance as yf
 import json 
 from datetime import date
@@ -33,3 +33,7 @@ def home():
         return current_xu100, todays_high_xu100, all_time_high, date_of_all_time_high
     
     return render_template("home.html",data = get_xu100_data())
+
+@views.route('/ads.txt')
+def serve_ads_txt():
+    return send_from_directory('static', 'ads.txt')
