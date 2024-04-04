@@ -1,3 +1,8 @@
+# Include the things inside .gitignore file
+
+#!include:.gitignore
+
+
 # This file specifies files that are *not* uploaded to Google Cloud
 # using gcloud. It follows the same syntax as .gitignore, with the addition of
 # "#!include" directives (which insert the entries of the given .gitignore-style
@@ -13,9 +18,9 @@
 .git
 .gitignore
 
-# Python pycache:
-__pycache__/
-venv/
 util/
 # Ignored by the build system
 /setup.cfg
+
+README.md
+.vscode/launch.json
