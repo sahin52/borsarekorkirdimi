@@ -3,13 +3,13 @@ import json
 import os
 from googleapiclient import discovery
 
-APP_NAME = os.getenv("GCP_PROJECT")
-if not APP_NAME:
-    APP_NAME = os.getenv("GOOGLE_CLOUD_PROJECT")
-if not APP_NAME:
-    APP_NAME = os.environ.get("GCP_PROJECT")
+APP_NAME = "borsarekorkirdimi"
+
 def limit_use_appengine(data, context):
     print("Starting, APP_NAME:",APP_NAME)
+    print("GOOGLE_CLOUD_PROJECT(getenv):", os.getenv("GOOGLE_CLOUD_PROJECT"))
+    print("GOOGLE_CLOUD_PROJECT:(environ.get)", os.environ.get("GOOGLE_CLOUD_PROJECT"))
+    print("GCP_PROJECT(environ.get):",os.environ.get("GCP_PROJECT"))
     pubsub_data = base64.b64decode(data["data"]).decode("utf-8")
     pubsub_json = json.loads(pubsub_data)
     cost_amount = pubsub_json["costAmount"]
@@ -32,5 +32,6 @@ def limit_use_appengine(data, context):
         print(f"Attempting to disable app {APP_NAME}...")
         body = {"servingStatus": "USER_DISABLED"}
         apps.patch(appsId=APP_NAME, updateMask="serving_status", body=body).execute()
+        print("Disabled app:", APP_NAME)
     else:
         print("It is not serving")
