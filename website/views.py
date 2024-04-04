@@ -32,7 +32,7 @@ def home():
                 json.dump({'allTimeHigh': all_time_high, 'dateOfAllTimeHigh': date_of_all_time_high}, file)
         return current_xu100, todays_high_xu100, all_time_high, date_of_all_time_high
     
-    return render_template("home.html",data = get_xu100_data())
+    return render_template("base.html",data = get_xu100_data())
 
 @views.route('/ads.txt')
 def serve_ads_txt():
