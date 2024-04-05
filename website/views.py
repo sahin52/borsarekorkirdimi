@@ -34,6 +34,24 @@ def home():
     
     return render_template("base.html",data = get_xu100_data())
 
+@views.route('/dolar-bazinda')
+def dolar_bazinda():
+    def get_xu100_usd_data():
+            # Get current xu100 value
+        xu100 = yf.Ticker('XU100.IS')
+        xu100history = xu100.history(period='1d')
+        current_xu100 = xu100history['Close'].iloc[-1]
+        currentUsdTry = yf.Ticker('USDTRY=X').history(period='1d')['Close'].iloc[-1]
+        current_xu100_usd = current_xu100 / currentUsdTry
+
+         # Read the all-time high from the JSON file
+        with open('db.json', 'r') as file:
+            data = json.load(file)
+            all_time_high = data['allTimeHighUSD']
+            date_of_all_time_high = data['dateOfAllTimeHighUSD']
+        return current_xu100_usd, all_time_high, date_of_all_time_high
+    return render_template("dolar-bazinda.html", data=get_xu100_usd_data())
+
 @views.route('/ads.txt')
 def serve_ads_txt():
     return send_from_directory('static', 'ads.txt')

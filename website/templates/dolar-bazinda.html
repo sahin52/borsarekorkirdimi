@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css" />
+    <link rel="stylesheet" href="/static/style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="google-adsense-account" content="ca-pub-2322685685599365" />
+    <title>Borsa bugün rekor kırdı mı?</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2322685685599365" crossorigin="anonymous"></script>
+    <link rel="icon" href="{{ url_for('static', filename = 'icon.png') }}" />
+  </head>
+  <body>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+    <div class="container">
+      <center>
+        <h1>Borsa bugün rekor kırdı mı?</h1>
+        <a href="/">TL bazındaki durumu görmek için tıklayınız</a>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2322685685599365" crossorigin="anonymous"></script>
+        <!-- orta reklam -->
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2322685685599365" data-ad-slot="6349967451" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <script>
+          ;(adsbygoogle = window.adsbygoogle || []).push({})
+        </script>
+        <h3>
+          {% if data[0] >= data[1] %}
+            Rekor kırdı
+          {% else %}
+            Rekor kırmadı
+          {% endif %} <br /><br />
+          {% if data[0] >= data[1] %}
+            <img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExOXB3YXo2YzU2c2F3MjB0Zm9wczlwbmdhdDAwc2V1a2p5cHNzNnhrOCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/AiULidifE382HGxt5U/giphy.gif" />
+          {% else %}
+            <img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExam5kc3FueG1odXRyM3FqdjVqNWx4ZG1yYXBkMmxqa2Z3a2JveDdmeCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/se5RgFVR3GgfjynNlb/giphy.gif" />
+          {% endif %}
+        </h3>
+        <h6>Şimdi BIST100/USD = {{ data[0]|round(2) }}</h6>
+        <h4>Tüm zamanlar Rekor BIST100/USD = {{ data[1]|round(2) }} ( {{ data[2] }} )</h4>
+      </center>
+    </div>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2322685685599365" crossorigin="anonymous"></script>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2322685685599365" data-ad-slot="2914319169" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>
+      ;(adsbygoogle = window.adsbygoogle || []).push({})
+    </script>
+  </body>
+</html>
