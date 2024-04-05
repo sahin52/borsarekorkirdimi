@@ -1,0 +1,120 @@
+/* toggle
+----------------------------------------------- */
+.azc_tsh_toggle, .azc_tsh_toggle_open, .azc_tsh_toggle_active, .azc_tsh_toggle_open_active {
+    margin: 5px 0px 0px 0px !important;
+	border: 1px solid #007fff;
+    font-weight:600;
+    font-size: 14px;
+    padding: 10px 10px 10px 30px;
+    background-repeat: no-repeat;
+	background-position: 10px 10px;
+	user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+}
+.azc_tsh_toggle {
+    background-image: url('images/azure_plus.png') ;
+}
+.azc_tsh_toggle_open {
+    background-image: url('images/azure_plus.png') !important;
+}
+.azc_tsh_toggle_active {
+    background-image: url('images/azure_minus.png') !important;
+}
+.azc_tsh_toggle_open_active {
+    background-image: url('images/azure_minus.png');
+}
+.azc_tsh_toggle a,.azc_tsh_toggle_open a, .azc_tsh_toggle_open_active a {
+	color: #000;
+}
+.azc_tsh_toggle_container, .azc_tsh_toggle_container_open {
+	margin: auto;
+    margin-bottom: 5px !important;
+	padding: 5px 15px;
+	border-right: 1px solid #007fff;
+	border-bottom: 1px solid #007fff;
+	border-left: 1px solid #007fff;
+	overflow: auto;
+}
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1 {
+    color: #212121;
+    font-size: 2.5em;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+h3, h4, h5, h6 {
+    color: #424242;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+
+table th, table td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+table th {
+    background-color: #4caf50;
+    color: white;
+}
+
+.green {
+    background-color: #4caf50;
+    color: white;
+}
+
+details {
+    background: #f9f9f9;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    padding: .5em .5em 0;
+    margin-bottom: 1em;
+	color: #000; 
+}
+
+summary {
+    font-weight: bold;
+    margin: -.5em -.5em 0;
+    padding: .5em;
+	color: #000; /* Add this line */
+
+}
+
+summary::-webkit-details-marker {
+    display: none;
+}
+
+summary:after {
+    content: '▶';
+    display: inline-block;
+    font-size: .8em;
+    padding-left: 4px;
+    color: #b1b1b1;
+    transition: all .2s ease-in-out;
+}
+
+details[open] > summary:after {
+    transform: rotate(90deg);
+	
+}

@@ -2,27 +2,21 @@
 <html>
   <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css" />
-
-    <!-- Let browser know website is optimized for mobile -->
+    <link rel="stylesheet" href="/static/style.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="google-adsense-account" content="ca-pub-2322685685599365" />
     <title>Borsa bugün rekor kırdı mı?</title>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2322685685599365" crossorigin="anonymous"></script>
     <link rel="icon" href="{{ url_for('static', filename = 'icon.png') }}" />
-    <style>
-      a {
-        color: #fdfeff;
-      }
-    </style>
   </head>
 
-  <body class="green">
+  <body >
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
     <div class="container">
       <center>
         <h1>Borsa bugün rekor kırdı mı?</h1>
-
+		<a href="/dolar-bazinda">Dolar bazındaki durumu görmek için tıklayınız</a>
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2322685685599365" crossorigin="anonymous"></script>
         <!-- orta reklam -->
         <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2322685685599365" data-ad-slot="6349967451" data-ad-format="auto" data-full-width-responsive="true"></ins>
@@ -44,6 +38,581 @@
         <h6>Şimdi BIST100 = {{ data[0]|round(2) }}</h6>
         <h5>Güniçi Rekor BIST100 = {{ data[1]|round(2) }}</h5>
         <h4>Tüm zamanlar Rekor BIST100 = {{ data[2]|round(2) }} ( {{ data[3] }} )</h4>
+        <div>
+          <h1>Borsada En Yükselen/Düşen Hisseler</h1>
+          <table>
+            <tr>
+              <th>En Yükselen</th>
+              <th>En Düşen</th>
+            </tr>
+            <tr>
+              <td>{{ data[4] }}</td>
+              <td>{{ data[5] }}</td>
+            </tr>
+          </table>
+          <p>*Veriler teyit edilmelidir, bu verilere dayanarak yapılan işlemlerden sorumluluk kabul edilmemektedir</p>
+        </div>
+        <div>
+          <h1>Altın ve Döviz Kurları</h1>
+          <table>
+            <tr>
+              <th>Altın/TL</th>
+              <th>Altın/Dolar(Global)</th>
+              <th>Altın/Dolar(Türkiye)</th>
+              <th>Dolar</th>
+              <th>Euro</th>
+            </tr>
+            <tr>
+              <td>{{ data[6] }}</td>
+              <td>{{ data[7] }}</td>
+              <td>{{ data[8] }}</td>
+              <td>{{ data[7] }}</td>
+              <td>{{ data[8] }}</td>
+            </tr>
+          </table>
+        </div>
+        <details>
+          <summary>Hisse Senedi Nedir?</summary>
+          <p>Hisse senedi (pay), anonim şirket tarafından ihraç edilen ve anonim şirketin sermayesini temsil eden menkul kıymetlerdir. Bir şirkette hisse senedi (pay) sahibi olmak, o şirkete ortak olmak demektir. Yatırımcılar borsada işlem gören şirketlerin hisselerini alıp satabilirler.</p>
+          <p>
+            Hisse senedi piyasasında işlemler elektronik alım satım sistemi aracılığıyla fiyat ve zaman önceliği kuralı baz alınarak “<em>Sürekli İşlem</em>”, “<em>Piyasa Yapıcılı Sürekli İşlem</em>” ve “<em>Tek Fiyat</em>” yöntemlerinde otomatik olarak gerçekleşmektedir.
+          </p>
+        </details>
+        <details>
+          <summary>Pay Piyasası Nedir?</summary>
+          <p>Hisse senedi (pay), anonim şirket tarafından ihraç edilen ve anonim şirketin sermayesini temsil eden menkul kıymetlerdir. Bir şirkette hisse senedi (pay) sahibi olmak, o şirkete ortak olmak demektir. Yatırımcılar borsada işlem gören şirketlerin hisselerini alıp satabilirler.</p>
+          <p>Borsa İstanbul Pay Piyasası; farklı sektörlerden şirketlerin payları, yeni pay alma (rüçhan) hakları, borsa yatırım fonları, varantlar ve sertifikalar işlem gördüğü piyasadır. Borsa İstanbul Pay Piyasası; yerli ve yabancı yatırımcılar için likit, şeffaf ve güvenli bir yatırım ortamı sağlamaktadır.</p>
+          <p>Pay Piyasası’nda yapılan alış veya satış emirleri, işlemlerin Borsa İstanbul’da gerçekleşmesini takip eden ikinci iş günü (takas günü) yatırım hesaplarına yansıtılmaktadır.</p>
+          <p>Hisse senedi (pay) ihraç edebilmek için, Sermaye Piyasası Kurulu (SPK) tarafından yetkilendirilmiş Yetki Belgesi alınması gerekmektedir. Bu yetki belgesine sahip olmayan şirketler pay (hisse senedi) ihraç edemezler.</p>
+        </details>
+        <details>
+          <summary>Borsa’da Hisse Senedi Alım Satım İşlemleri Nasıl Yapılır?</summary>
+          <p>Borsa İstanbul’da hisse senedi alım satım işlemlerini yapabilmek için öncelikle bir yatırım hesabı açmanız gerekmektedir.</p>
+          <p>Borsada işlemin gerçekleştiği güne T günü, işlem sonucunun hesabınıza yansıdığı 2nci iş gününe ise T+2 günü denir. Alım ve satım işlemleri, işlem emri verildikten 2 iş günü (T+2 günü) sonra hesabınıza yansır.</p>
+          <p>Hisse senedi alım işlemlerinde, alınan hisse senedi/senetlerinin tutarlarının 2nci iş günü (T+2 günü) yatırım hesabınızda olması gerekmektedir. Hisse senedi satış işleminde ise, satılan hisse senedi/senetlerinin tutarları da 2nci iş günü (T+2 günü) yatırım hesabınıza aktarılır.</p>
+        </details>
+        <details>
+          <summary>Borsa’da Hisse Senedi İşlemleri Hangi Pazarlarda Gerçekleşir?</summary>
+          <p>BIST Pay Piyasası’nda hisse senedi işlemleri 6 ayrı pazarda gerçekleştirilir.</p>
+          <ul>
+            <li>
+              <strong>Yıldız Pazar</strong>
+            </li>
+            <li>
+              <strong>Ana Pazar</strong>
+            </li>
+            <li>
+              <strong>Alt Pazar</strong>
+            </li>
+            <li>
+              <strong>Yakın İzleme Pazarı (YİP)</strong>
+            </li>
+            <li>
+              <strong>Yapılandırılmış Ürünler ve Fon Pazarı (YÜFP)</strong>
+            </li>
+            <li>
+              <strong>Nitelikli Yatırımcı İşlem Pazarı (NYİP)</strong>
+            </li>
+            <li>
+              <strong>Piyasa Öncesi İşlem Platformu (PÖİP)</strong>
+            </li>
+          </ul>
+        </details>
+        <details>
+          <summary>Zincir Emir Nedir, Zincir Emir Nasıl Verilir?</summary>
+          <p>Zincir emir, hisse senedi piyasasında sıkça kullanılan bir emir türüdür. Zincir emir, henüz gerçekleşmemiş olan bir ana alım-satım hisse senedi emrine bağlı olan ve bu ana emrin gerçekleşmesi durumunda otomatik olarak hisse senedi piyasasına iletilmek üzere tanımlanmış olan hisse senedi alım veya satım emirlerinin tamamını ifade eder.</p>
+          <p>Zincir emrin gerçekleşmesi için öncelikle, ana alım-satım emrinin gerçekleşmesi gerekmektedir. Ana emre birden fazla zincir emir bağlanabilir. Ana emrin tamamı gerçekleştikten sonra buna bağlı diğer hisse senedi alım-satım emir veya emirleri borsaya iletilir.</p>
+        </details>
+        <details>
+          <summary>Borsa’da Hisse Senedi Emirleri Ne Kadar Süre Geçerlidir?</summary>
+          <p>Borsa İstanbul’da hisse senedi emirlerinin geçerlilik süresi; Günlük, Kalanı İptal Et ve İptale Kadar Geçerli olmak üzere üçe ayrılmaktadır.</p>
+          <p>
+            <strong>Günlük:</strong>&nbsp;Hisse senedi emri girildiği gün boyunca geçerlidir ve işlem gerçekleşmezse gün sonunda otomatik iptal olur.
+          </p>
+          <p>
+            <strong>Kalanı İptal Et (KİE):</strong>&nbsp;Hisse senedi emrinin verildiği anda işlemin fiyat vb. sebepler ile gerçekleşmeyen bölümünün otomatik olarak iptal edildiği, kalanın pasife yazılmadığı hisse senedi emir türüdür.
+          </p>
+          <p>
+            <strong>İptale Kadar Geçerli (IKG):</strong>&nbsp;Hisse senedi emrinin verildiği andan itibaren iptal edilmesine kadar geçerli olan emir türüdür.
+          </p>
+        </details>
+        <details>
+          <summary>Hisse Senedi Sahiplerinin Hakları Nelerdir?</summary>
+          <p>Hisse senedi sahipleri, hisse senetlerinin sağladığı Temettü Hakkı, Rüçhan Hakkı, Bedelsiz Hisse Alma Hakkı, Tasfiye Bakiyesi Hakkı, Yönetime Katılma Hakkı, Oy Hakkı, Bilgi Alma Hakkı ve Özel Denetim İsteme Hakkı olmak üzere 8 adet haktan yararlanabilmektedir. Hisse senedi sahiplerinin hakları aşağıdaki gibidir;</p>
+                  <ul>
+                    <li>
+                      <strong>Temettü (Kâr Payı) Hakkı:</strong>
+                    </li>
+                  </ul>
+                  <p>Şirket kâr ettiği zaman sermayede pay sahibi olan ortak, bu kâra payı oranında ortak olur ve kâr payı alma hakkına sahip olur.</p>
+                  <ul>
+                    <li>
+                      <strong>Rüçhan Hakkı:</strong>
+                    </li>
+                  </ul>
+                  <p>Şirketin bedelli sermaye artırımına gitmesi halinde, mevcut ortakların sermaye artırımına öncelikle katılma hakkı bulunur. Buna Rüçhan Hakkı denir.</p>
+                  <ul>
+                    <li>
+                      <strong>Bedelsiz Hisse Alma Hakkı:</strong>
+                    </li>
+                  </ul>
+                  <p>Şirketin bedelsiz sermaye artırımı yapması durumunda; ihraç edilen payları, mevcut ortakların bedelsiz olarak alma hakkı vardır.</p>
+                  <ul>
+                    <li>
+                      <strong>Tasfiye Bakiyesi Hakkı:</strong>
+                    </li>
+                  </ul>
+                  <p>Şirketin tasfiyesi halinde, tasfiye sürecinden sonra kalan bakiyeden mevcut ortakların sahip olduğu pay oranında pay alma hakkı vardır.</p>
+                  <ul>
+                    <li>
+                      <strong>Yönetime Katılma Hakkı:</strong>
+                    </li>
+                  </ul>
+                  <p>Pay sahibi olan yatırımcı, şirket yönetim kurulu seçimlerinde seçmen ve aday olarak yönetime katılma hakkına sahiptir.</p>
+                  <ul>
+                    <li>
+                      <strong>Oy Hakkı:</strong>
+                    </li>
+                  </ul>
+                  <p>Pay sahiplerinin şirketin genel kurulunda en az bir oy kullanma hakkı vardır.</p>
+                  <ul>
+                    <li>
+                      <strong>Bilgi Alma Hakkı:</strong>
+                    </li>
+                  </ul>
+                  <p>Pay sahipleri istedikleri zaman şirket sırları dışındaki bilgiler olmak kaydıyla genel bilgileri edinme hakkına sahiptirler.</p>
+                  <ul>
+                    <li>
+                      <strong>Özel Denetim İsteme Hakkı:</strong>
+                    </li>
+                  </ul>
+                  <p>Mevcut ortaklar, şirketin faaliyetleri veya finansal durumuna ilişkin olarak özel denetim yapılmasını, özel denetçi atanmasını talep edebilirler.</p>
+                
+        </details>
+        <details>
+          <summary>Devre Kesici Nedir?</summary>
+		  <p>Borsa İstanbul’da olağanüstü fiyat hareketlerinden yatırımcıların olumsuz etkilenmemesi için uygulanan bir sistemdir. Bir hisse senedinde, Borsa İstanbul tarafından belirlenen oranın üzerinde düşüş gerçekleştiği zaman, devre kesici otomatik olarak devreye girer ve bu hisse senedinde işlemler geçici olarak durdurulur.</p>
+		  <ul>
+			<li>
+			  <strong>Endekse Bağlı Devre Kesici Sistemi</strong>
+			</li>
+		  </ul>
+		  <p>BİST100 endeksinin gün içerisinde &nbsp;önceki günün kapanışına göre ilk olarak %5 veya daha fazla ve ikinci olarak %7 veya daha fazla düşmesi durumunda Endekse Bağlı Devre Kesici Sistemi (EBDKS) otomatik olarak devreye girer. Pay Piyasası, Vadeli İşlem ve Opsiyon Piyasası’ndaki (VİOP) paya ve pay endekslerine dayalı sözleşmeler ile Borçlanma Araçları Piyasası Pay Repo Pazarı’nda ki işlemler geçici olarak durdurulur.</p>
+		  <p>Endekse Bağlı Devre Kesici Sistemi’nin, Pay Piyasasında sürekli işlem seansının sona ermesinden önceki 60 ila 30 dakika arasında (mevcut durumda 17.00-17.30 arasında) devreye girmesi halinde her üç piyasada da işlemler durdurulur. İşlemler Pay Piyasası ile Borçlanma Araçları Piyasası Pay Repo Pazarı’nda kapanış seansı ile (mevcut durumda 18:00’da), VİOP’ta ise ilgili sözleşmelerde VIOP_SUREKLI_MZYD seansı ile (mevcut durumda 18:08’de) yeniden başlatılır.</p>
+		  <p>Endekse Bağlı Devre Kesici Sistemi kapsamında belirlenen eşiklerin (%5 ve %7) gün içerisinde tekrar aşılması halinde devre kesici aynı aşama için ikinci kez çalışmaz. Endekse Bağlı Devre Kesici Sistemi uygulamasının devreye alınması ile hisse senedi bazında uygulanan devre kesicilerde emir toplama süresi 15 dakikaya indirilir, eşleştirme süresi ise 2 dakika olarak devam eder.</p>
+	   
+        </details>
+        <details>
+          <summary>Volatilite Bazlı Tedbir Uygulaması (VBTS) Nedir?</summary>
+		  <p>
+			Sermaye Piyasası Kurulu’nun &nbsp;ilgili kararları uyarınca, Borsa İstanbul Pay Piyasası’nda işlem gören hisse senetlerinde, işlemlerin adil ve dürüst bir şekilde gerçekleşmesinin sağlanması amacıyla&nbsp;<strong>Volatilite Bazlı Tedbir Sistemi</strong><strong>(VBTS)</strong>&nbsp;uygulanmaktadır.
+		  </p>
+		  <p>Volatilite Bazlı Tedbir Sistemi (VBTS)&nbsp; kapsamında, gerekli koşulların oluştuğu tespit edilen hisse senetlerinde kademeli olarak ve bir sonraki tedbirin de uygulanması durumunda bir önceki tedbirin devam etmesi suretiyle;</p>
+		  <ol>
+			<li>15 gün süre ile birinci seviye “Açığa Satış ve Kredili İşlem Yasağı” tedbiri,</li>
+			<li>15 gün süre ile ikinci seviye “Brüt Takas” tedbiri,</li>
+			<li>15 gün süre ile üçüncü seviye “Tek Fiyat Yöntemi ile İşlem Görme” tedbiri uygulanır.</li>
+		  </ol>
+		  <p>Tedbire konu olacak hisse senedi, uygulanacak tedbir ilgili tarihte piyasa kapandıktan sonra tedbirin başlangıç ve bitiş tarihlerini de içerecek şekilde Borsa İstanbul tarafından Kamuyu Aydınlatma Platformu (KAP) üzerinden duyurulur.</p>
+		
+        </details>
+        <details>
+          <summary>Brüt Takas Uygulaması Nedir</summary>
+          <p>Brüt Takas uygulaması, Borsa İstanbul’da zaman zaman bazı hisse senetlerinde olan yüksek miktarlı alım ve satım işlemleri sonucunda hisse senetlerinde oluşan olağandışı fiyat hareketleri sonucunda yatırımcıları karşılaşabilecekleri risklere karşı korumak için uygulanan bir tedbirdir.</p>
+                  <p>Hangi hisse senetlerinin Brüt takasa alınacağına ve ne kadar süre Brüt takasta kalacağına, SPK tarafından karar verilir.</p>
+                  <p>Brüt Takas Uygulamasında;</p>
+                  <ul>
+                    <li>Satın alınan hisse senedi aynı gün içerisinde satılamaz. Alınan hisse senedi en erken bir sonraki işlem günü (T+1) satılabilir. Kısaca Brüt Takas’ta bulunan bir hisse senedi aynı gün alınıp satılamaz.</li>
+                    <li>Brüt Takas uygulamasında olan hisse senetlerinde, alım tutarı kadar nakit paranın hesapta olması gerekmektedir.</li>
+                    <li>Brüt Takas uygulaması getirilen hisse senetlerinde kredili işlemler yapılamaz.</li>
+                    <li>Brüt Takas uygulaması getirilen hisse senetlerinde açığa satış işlemleri yapılamaz.</li>
+                  </ul>
+                  <p>Brüt Takas uygulaması dahilinde olan hisse senetleri için online kanallardan alım/satım emri girilemez. Yalnızca telefon aracılığı ile müşteri temsilcileri veya şahsen alım satım emri verilebilir.</p>
+                
+        </details>
+        <details>
+          <summary>Hisse Senedi Nedir?</summary>
+          <p>Hisse senedi (pay), anonim şirket tarafından ihraç edilen ve anonim şirketin sermayesini temsil eden menkul kıymetlerdir. Bir şirkette hisse senedi (pay) sahibi olmak, o şirkete ortak olmak demektir. Yatırımcılar borsada işlem gören şirketlerin hisselerini alıp satabilirler.</p>
+          <p>
+            Hisse senedi piyasasında işlemler elektronik alım satım sistemi aracılığıyla fiyat ve zaman önceliği kuralı baz alınarak “<em>Sürekli İşlem</em>”, “<em>Piyasa Yapıcılı Sürekli İşlem</em>” ve “<em>Tek Fiyat</em>” yöntemlerinde otomatik olarak gerçekleşmektedir.
+          </p>
+        </details>
+        <details>
+          <summary>Hisse Senedi Nedir?</summary>
+          <p>Hisse senedi (pay), anonim şirket tarafından ihraç edilen ve anonim şirketin sermayesini temsil eden menkul kıymetlerdir. Bir şirkette hisse senedi (pay) sahibi olmak, o şirkete ortak olmak demektir. Yatırımcılar borsada işlem gören şirketlerin hisselerini alıp satabilirler.</p>
+          <p>
+            Hisse senedi piyasasında işlemler elektronik alım satım sistemi aracılığıyla fiyat ve zaman önceliği kuralı baz alınarak “<em>Sürekli İşlem</em>”, “<em>Piyasa Yapıcılı Sürekli İşlem</em>” ve “<em>Tek Fiyat</em>” yöntemlerinde otomatik olarak gerçekleşmektedir.
+          </p>
+        </details>
+        <details>
+          <summary>Hisse Senedi Nedir?</summary>
+          <p>Hisse senedi (pay), anonim şirket tarafından ihraç edilen ve anonim şirketin sermayesini temsil eden menkul kıymetlerdir. Bir şirkette hisse senedi (pay) sahibi olmak, o şirkete ortak olmak demektir. Yatırımcılar borsada işlem gören şirketlerin hisselerini alıp satabilirler.</p>
+          <p>
+            Hisse senedi piyasasında işlemler elektronik alım satım sistemi aracılığıyla fiyat ve zaman önceliği kuralı baz alınarak “<em>Sürekli İşlem</em>”, “<em>Piyasa Yapıcılı Sürekli İşlem</em>” ve “<em>Tek Fiyat</em>” yöntemlerinde otomatik olarak gerçekleşmektedir.
+          </p>
+        </details>
+
+         <!--- div class="vc_tta-panels">
+          
+        
+          <div class="vc_tta-panel" id="1692188614383-594a3fcf-18f1" data-vc-content=".vc_tta-panel-body">
+            <div class="vc_tta-panel-heading">
+              <h4><a href="#1692188614383-594a3fcf-18f1" class="__mPS2id"><span class="vc_tta-title-text">Borsa’da Açığa Satış Nedir? Açığa Satış Nasıl Yapılır?</span><i class="vc_tta-controls-icon vc_tta-controls-icon-plus"></i></a></h4>
+            </div>
+            <div class="vc_tta-panel-body">
+              <div class="wpb_text_column wpb_content_element">
+                <div class="wpb_wrapper">
+                  <p>Borsa’da açığa satış işlemi, yatırım portföyünde bulunmayan ve sahip olunmayan sermaye piyasası araçlarının satılmasını ifade eder.</p>
+                  <p>Açığa satış işleminde, fiyatının düşmesini beklediğiniz ve portföyünüzde olmayan hisse senedi için satış emri verilir. Eğer hisse senedinin fiyatı beklendiği gibi düşerse, düştüğü yerden açığa satış emri verilen hisse senedi alınarak açık pozisyon kapatılır. Aradaki fark ise kazanç olarak kabul edilir. Ancak hisse senedinin fiyatı düşmek yerine yükselirse, bu durumda da yükseliş tarafında oluşan fark ise pozisyon zararı olarak ortaya çıkar.</p>
+                  <ul>
+                    <li>Açığa satış işleminde, hisse senedi satış emri girilirken baştan bunun açığa satış emri olduğunun belirtilmesi gerekmektedir.</li>
+                    <li>Açığa satış yapılan hisse senedi için açık pozisyonların gün sonunda kapatılması gerekmektedir. Pozisyon gün sonunda kapatılamaz ise o hisse senedi piyasadan ödünç alınarak pozisyon kapatılır.</li>
+                    <li>Açığa satış işlemleri; Yıldız Pazar, Ana Pazar’da işlem gören hisse senetleri, Borsa Yatırım Fonları’nda açığa satış işlemleri yapılabilmektedir.</li>
+                    <li>Açığa satış yapılabilecek sermaye piyasası araçları ve hisse senetlerini SPK belirler.</li>
+                    <li>SPK aynı zamanda bazı hisse senetlerine açığa satış yasağı koyabilir. Bu hisse senetlerinde açığa satış işlemi yapılamaz.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="vc_tta-panel" id="1692189821978-d8c67d0b-44ea" data-vc-content=".vc_tta-panel-body">
+            <div class="vc_tta-panel-heading">
+              <h4><a href="#1692189821978-d8c67d0b-44ea" class="__mPS2id"><span class="vc_tta-title-text">Borsa’da Hisse Senedi İşlem Saatleri Nedir?</span><i class="vc_tta-controls-icon vc_tta-controls-icon-plus"></i></a></h4>
+            </div>
+            <div class="vc_tta-panel-body">
+              <div class="wpb_text_column wpb_content_element">
+                <div class="wpb_wrapper">
+                  <h4 style="text-align: center;">Sürekli İşlem Gören Hisse Senedi İşlem Saatleri</h4><table>
+                    <tbody>
+                      <tr>
+                        <td width="113">
+                          <h4>09:40 – 09:55</h4>
+                        </td>
+                        <td width="491">
+                          <h4>Gün Başı Açılış Seansı İçin Emir Toplama</h4>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="113">
+                          <h4>09:55 – 10:00</h4>
+                        </td>
+                        <td width="491">
+                          <h4>Eşleştirme/Fiyat Belirleme</h4>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="113">
+                          <h4>10:00 – 18:00</h4>
+                        </td>
+                        <td width="491">
+                          <h4>Sürekli İşlem</h4>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="113">
+                          <h4>18:01 – 18:05</h4>
+                        </td>
+                        <td width="491">
+                          <h4>Kapanış Seansı</h4>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="113">
+                          <h4>18:05 – 18:08</h4>
+                        </td>
+                        <td width="491">
+                          <h4>Eşleştirme/Fiyat Belirleme</h4>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="113">
+                          <h4>18:08 – 18:10</h4>
+                        </td>
+                        <td width="491">
+                          <h4>Kapanış Fiyatlı İşlemler</h4>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>&nbsp;</p><h4 style="text-align: center;">Tek Fiyattan İşlem Gören Hisse Senedi İşlem Saatleri</h4><table>
+                    <tbody>
+                      <tr>
+                        <td width="113">
+                          <h4>09:40 – 09:55</h4>
+                        </td>
+                        <td width="491">
+                          <h4>Gün Başı Açılış Seansı İçin Emir Toplama</h4>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="113">
+                          <h4>09:55 – 10:00</h4>
+                        </td>
+                        <td width="491">
+                          <h4>Eşleştirme/Fiyat Belirleme</h4>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="113">
+                          <h4>10:00 – 12:55</h4>
+                        </td>
+                        <td width="491">
+                          <h4>Tek Fiyattan Emir Toplama</h4>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="113">
+                          <h4>12:55 – 13:00</h4>
+                        </td>
+                        <td width="491">
+                          <h4>Eşleştirme/Fiyat Belirleme</h4>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="113">
+                          <h4>13:00 – 13:55</h4>
+                        </td>
+                        <td width="491">
+                          <h4>Gün Ortası Tek Fiyat Seansı (Emir Toplama)</h4>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="113">
+                          <h4>13:55 – 14:00</h4>
+                        </td>
+                        <td width="491">
+                          <h4>Eşleştirme/Fiyat Belirleme</h4>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="113">
+                          <h4>14:00 – 17:55</h4>
+                        </td>
+                        <td width="491">
+                          <h4>Tek Fiyattan Emir Toplama</h4>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="113">
+                          <h4>17:55 – 18:00</h4>
+                        </td>
+                        <td width="491">
+                          <h4>Eşleştirme/Fiyat Belirleme</h4>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="113">
+                          <h4>18:01 – 18:05</h4>
+                        </td>
+                        <td width="491">
+                          <h4>Kapanış Seansı</h4>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="113">
+                          <h4>18:05 – 18:07</h4>
+                        </td>
+                        <td width="491">
+                          <h4>Eşleştirme/Fiyat Belirleme</h4>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="113">
+                          <h4>18:08 – 18:10</h4>
+                        </td>
+                        <td width="491">
+                          <h4>Kapanış Fiyatlı İşlemler</h4>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="vc_tta-panel" id="1692189896923-293bd261-ece6" data-vc-content=".vc_tta-panel-body">
+            <div class="vc_tta-panel-heading">
+              <h4><a href="#1692189896923-293bd261-ece6" class="__mPS2id"><span class="vc_tta-title-text">Gün İçi İşlem Limiti Nedir?</span><i class="vc_tta-controls-icon vc_tta-controls-icon-plus"></i></a></h4>
+            </div>
+            <div class="vc_tta-panel-body">
+              <div class="wpb_text_column wpb_content_element">
+                <div class="wpb_wrapper">
+                  <p>Hesabınızda bulunan nakit, hisse senetleri ve yatırım fonlarının toplam tutarları üzerinden, teminat kabul edilebilecek varlıklarınızın 5 katına kadar gün içi işlem limit tanımlanabilmektedir. VİOP ve Forex hesaplarınızda yer alan tutarlar ve teminatlar gün içi işlem limiti belirlenirken dikkate alınmaz. Bu limit dahilinde gün içinde işlem yapabilirsiniz.</p>
+                  <p>Gün içi işlem limiti, BIST30’da yer alan hisse senetleri için 5 kat olurken, diğer hisse senetleri için değişebilmektedir. Gün içi işlem limitini kullanarak yaptığınız alım işlemlerinizi satış yaparak gün sonunda ya da T+2 günü hesabınıza yaptığınız işlem kadar nakit yatırarak alım pozisyonlarını kapatmanız gerekmektedir.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="vc_tta-panel" id="1692189921327-910da8b2-620f" data-vc-content=".vc_tta-panel-body">
+            <div class="vc_tta-panel-heading">
+              <h4><a href="#1692189921327-910da8b2-620f" class="__mPS2id"><span class="vc_tta-title-text">Hisse Senedi Kredisi nedir? Borsa’da Kredili İşlem Nasıl Yapılır?</span><i class="vc_tta-controls-icon vc_tta-controls-icon-plus"></i></a></h4>
+            </div>
+            <div class="vc_tta-panel-body">
+              <div class="wpb_text_column wpb_content_element">
+                <div class="wpb_wrapper">
+                  <p>Hesabınızda bulunan nakit ve hisse senetlerini teminat göstererek kredili hisse senedi alım işlemlerini yapabilirsiniz.</p>
+                  <p>Kredi limiti belirlenirken teminat olarak alınabilecek hisse senetleri, SPK ve Borsa İstanbul tarafından belirlenir. Ancak aracı kurumlar ek olarak hangi hisse senetlerinin ne kadar teminat oranı ile krediye dahil olacağını kendileri belirlerler. Kredi limiti, hesabınızda bulunan nakit ve hisse senetlerinin teminat oranlarına göre toplam portföyünüzün %0 ile %90’ı arasında olabilir.</p>
+                  <p>Kredili hisse senedi işlemlerinde başlangıç özkaynak oranı %50’dir.&nbsp; oranında özkaynak bulundurulması zorunludur. SPK Tebliği gereğince, özkaynak oranının %35’in altına düşmesi durumunda, ilave teminat yatırarak ya da hesabınızda yer alan hisse senetlerinden satış işlemi yaparak özkaynak oranının tekrar en az %50’ye getirilmesi gerekmektedir.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="vc_tta-panel" id="1692189931071-e4591139-e1d1" data-vc-content=".vc_tta-panel-body">
+            <div class="vc_tta-panel-heading">
+              <h4><a href="#1692189931071-e4591139-e1d1" class="__mPS2id"><span class="vc_tta-title-text">Halka Arz Nedir?</span><i class="vc_tta-controls-icon vc_tta-controls-icon-plus"></i></a></h4>
+            </div>
+            <div class="vc_tta-panel-body">
+              <div class="wpb_text_column wpb_content_element">
+                <div class="wpb_wrapper">
+                  <p>Halka arz, bir şirketin hisse senetlerinin (paylarının) BIST Pay Piyasası’nda işlem görebilmesi için çok sayıda ve önceden bilinmeyen yatırımcılara çağrı ve ilan yoluyla hisse senedi (pay) satışı yapılmasıdır.</p>
+                  <p>Halka arz sonrasında, şirketin hisse senetleri piyasada işlem görmeye başlar ve bu sayede yatırımcılar hisse senetlerini satın alarak şirkete ortak olabilirler.</p>
+                  <p>Sonuç olarak, halka arz sayesinde şirketler alternatif finansman kaynağına ulaşmak suretiyle büyüme stratejilerini gerçekleştirilebilmek, yatırım yapabilmek gibi konularda kaynak ihtiyaçlarını karşılayabilirler.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="vc_tta-panel" id="1692189932051-f7d28a29-48d7" data-vc-content=".vc_tta-panel-body">
+            <div class="vc_tta-panel-heading">
+              <h4><a href="#1692189932051-f7d28a29-48d7" class="__mPS2id"><span class="vc_tta-title-text">Şirketler Neden Halka Arz Olur?</span><i class="vc_tta-controls-icon vc_tta-controls-icon-plus"></i></a></h4>
+            </div>
+            <div class="vc_tta-panel-body">
+              <div class="wpb_text_column wpb_content_element">
+                <div class="wpb_wrapper">
+                  <p>Şirketler genel olarak finansman kaynağı yaratma, likidite, kurumsallaşma, kredibilite artışı, tanıtım ve itibar sağlamak amacıyla halka arz olurlar.</p>
+                  <p>Halka arz, şirketlere şeffaf ve güvenilir bir piyasa üzerinden kaynak elde etme imkanı sunmaktadır.</p>
+                  <p>Halka arzlar, şirketin nakit akışını zorlayabilecek anapara ve faiz ödeme zorunluluğu olan borçlanma yöntemine göre daha avantajlı finansman elde etmek için tercih edilir.</p>
+                  <p>Halka arz sonrasında şirketler; finansal tablolarını belirli dönemlerde bağımsız denetim kuruluşlarına denetlettirmekte, ortaklarını ve kamuyu düzenli olarak bilgilendirmekte, SPK ve Borsa İstanbul’un sürekli denetimine tabi olmaktadırlar.</p>
+                  <p>Bu noktada sermaye piyasası disiplini içerisinde mali ve diğer önemli bilgilerini kamuya açıklayan, düzenli ve zamanında raporlamalar yapan halka arz edilmiş şirketler hızlı bir şekilde kurumsallaşabilmektedir. Şirketin kurumsallaşma yolunda attığı adımlar yardımıyla şirketin organizasyonunun güçlenmesi, başarısı ve sürekliliği, kurucu ortak grubundan bağımsızlaşmasına önemli katkılar yapmaktadır.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="vc_tta-panel" id="1692190022394-c462b7de-9e85" data-vc-content=".vc_tta-panel-body">
+            <div class="vc_tta-panel-heading">
+              <h4><a href="#1692190022394-c462b7de-9e85" class="__mPS2id"><span class="vc_tta-title-text">Halka Arz Yöntemleri Nelerdir?</span><i class="vc_tta-controls-icon vc_tta-controls-icon-plus"></i></a></h4>
+            </div>
+            <div class="vc_tta-panel-body">
+              <div class="wpb_text_column wpb_content_element">
+                <div class="wpb_wrapper">
+                  <p>Halka arz işlemlerinde 3 çeşit halka arz yöntemi kullanılabilmektedir:</p>
+                  <ul>
+                    <li>
+                      <strong>Mevcut Hisse Senetlerinin Satışıyla Halka Arz</strong>
+                    </li>
+                  </ul>
+                  <p>Şirket ortaklarının ellerinde bulundurdukları hisse senetlerinin tamamının ya da bir kısmının halka arz edilmesidir.</p>
+                  <ul>
+                    <li>
+                      <strong>Sermaye Artırımı Yoluyla Halka Arz</strong>
+                    </li>
+                  </ul>
+                  <p>Şirketler, mevcut sermayelerini arttırma yoluyla ortaya çıkan yeni hisse senetlerini halka arz ederek finansman kaynağı sağlayabilirler.</p>
+                  <ul>
+                    <li>
+                      <strong>Her 2 Yöntemin Kullanılmasıyla Halka Arz</strong>
+                    </li>
+                  </ul>
+                  <p>Şirketler hem mevcut ortaklarının paylarının satışı hem de sermaye artışı yoluyla oluşan yeni hisse senetlerini kullanarak halka arz işlemini gerçekleştirebilirler.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="vc_tta-panel" id="1692190052714-b73abc72-0b00" data-vc-content=".vc_tta-panel-body">
+            <div class="vc_tta-panel-heading">
+              <h4><a href="#1692190052714-b73abc72-0b00" class="__mPS2id"><span class="vc_tta-title-text">Halka Arz Dağıtım Yöntemleri Nelerdir?</span><i class="vc_tta-controls-icon vc_tta-controls-icon-plus"></i></a></h4>
+            </div>
+            <div class="vc_tta-panel-body">
+              <div class="wpb_text_column wpb_content_element">
+                <div class="wpb_wrapper">
+                  <p>Eşit Dağıtım ve Oransal Dağıtım halka arz işlemlerinde kullanılan dağıtım yöntemleridir.</p>
+                  <ol>
+                    <li>
+                      <strong>Eşit Dağıtım</strong>
+                    </li>
+                  </ol>
+                  <p>Eşit Dağıtım yönteminde, halka arza katılan herkes, aynı sayıda hisse senedi alır.</p>
+                  <ol start="2">
+                    <li>
+                      <strong>Oransal Dağıtım</strong>
+                    </li>
+                  </ol>
+                  <p>Oransal Dağıtım yönteminde ise halka arza katılan yatırımcılar, halka arza katılmak üzere başvurdukları tutarın büyüklüğüne oranla şirketin hisse senetlerine sahip olurlar. Oransal dağıtımda, halka arza katılan yatırımcı ne kadar çok para yatırır ise yatırdığı paranın halka arz için yatırımcılar tarafından talep edilen toplam tutar içindeki payı oranında hisse senedi sahibi olabilir.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="vc_tta-panel" id="1692190054015-6dbdc05c-f770" data-vc-content=".vc_tta-panel-body">
+            <div class="vc_tta-panel-heading">
+              <h4><a href="#1692190054015-6dbdc05c-f770" class="__mPS2id"><span class="vc_tta-title-text">İkincil Halka Arz Nedir?</span><i class="vc_tta-controls-icon vc_tta-controls-icon-plus"></i></a></h4>
+            </div>
+            <div class="vc_tta-panel-body">
+              <div class="wpb_text_column wpb_content_element">
+                <div class="wpb_wrapper">
+                  <p>Şirket hisse senetleri Borsa İstanbul’da işlem görürken ortaya çıkabilecek ek finansman kaynağı ihtiyaçlarında, şirketler ikincil halka arza gidebilirler. Bu durumda şirketin borsada işlem gören hisse senedi sayısı, dolayısı ile şirketin halka açıklık oranı artmış olur.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="vc_tta-panel" id="1692190055546-7671c1ef-d593" data-vc-content=".vc_tta-panel-body">
+            <div class="vc_tta-panel-heading">
+              <h4><a href="#1692190055546-7671c1ef-d593" class="__mPS2id"><span class="vc_tta-title-text">Halka Arz Süreci Nedir?</span><i class="vc_tta-controls-icon vc_tta-controls-icon-plus"></i></a></h4>
+            </div>
+            <div class="vc_tta-panel-body">
+              <div class="wpb_text_column wpb_content_element">
+                <div class="wpb_wrapper">
+                  <p>Halka arz süreci, bir şirketin hisse senetlerinin ilk kez borsada işlem görmesini ve borsa üzerinden alınıp satılmasını sağlayan süreç olarak ifade edilebilir.</p>
+                  <p>Bir şirketin hisse senetlerinin borsada işlem görebilmesi için, Borsa İstanbul’un izniyle borsaya kaydedilmesi işlemine kotasyon denir. Bu durumda olan hisse senetleri için kullanılan terim ise “borsaya kote olmak” terimidir.</p>
+                  <p>Borsaya kote olmayan yani borsaya kaydedilmeyen hisse senetlerinin borsa üzerinden alım/satım işlemleri yapılamaz.</p>
+                  <p>Şirketlerin halka arza hazır hale getirilmesi, tüm sürecin takip edilmesi ve sonrasında da halka arz işlemlerinin gerçekleştirilebilmesi için mutlaka konusunda uzman ve tecrübeli bir yatırım şirketi ile çalışması büyük önem taşımaktadır.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="vc_tta-panel" id="1692190122844-2b3ac3fa-b822" data-vc-content=".vc_tta-panel-body">
+            <div class="vc_tta-panel-heading">
+              <h4><a href="#1692190122844-2b3ac3fa-b822" class="__mPS2id"><span class="vc_tta-title-text">Halka Arz Şartları Nelerdir?</span><i class="vc_tta-controls-icon vc_tta-controls-icon-plus"></i></a></h4>
+            </div>
+            <div class="vc_tta-panel-body">
+              <div class="wpb_text_column wpb_content_element">
+                <div class="wpb_wrapper">
+                  <p>Halka arz işleminin yapılabilmesi için şirketlerin yerine getirmesi gereken bazı şartlar bulunmaktadır.</p>
+                  <p>Halka arz sürecinin sağlıklı ilerleyebilmesi için halka arz olacak şirketin öncelikle bu konuda uzman ve halka arza yetkili bir aracı kurum ile tüm sürecin yönetilmesi için anlaşması gerekmektedir.</p>
+                  <p>Aracı kurum şirketi halka açılmaya hazır hale getirmek için istenen standartta finansal tablo ve raporların hazırlanması dâhil halka arz için gerekli tüm şart ve kuralların yerine getirilmesini sağlayacak yönlendirme ve işlemleri yapar ve bu sürecin sonunda şirketin SPK ve Borsa İstanbul’a halka arz başvurusunda bulunmasını sağlar.</p>
+                  <p>SPK ve Borsa İstanbul yetkilileri hazırlanan belgeleri ve şirket ile ilgili tüm bilgi, rapor ve finansal dökümanları incelerler.</p>
+                  <p>Gerekli şartlar sağlanmış ise, halka arz için gerekli onaylar verilerek, halka arz işleminin tamamlanması sağlanır.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="vc_tta-panel" id="1692190123798-3a87ad12-52cd" data-vc-content=".vc_tta-panel-body">
+            <div class="vc_tta-panel-heading">
+              <h4><a href="#1692190123798-3a87ad12-52cd" class="__mPS2id"><span class="vc_tta-title-text">Halka Arza Katılan Şirketler Hangileridir?</span><i class="vc_tta-controls-icon vc_tta-controls-icon-plus"></i></a></h4>
+            </div>
+            <div class="vc_tta-panel-body" style="height: 0px;">
+              <div class="wpb_text_column wpb_content_element">
+                <div class="wpb_wrapper">
+                  <p>
+                    Halka arza katılan şirketlerin hisse senetleri Borsa İstanbul’da işlem görmektedir. Türkiye’de borsada işlem gören şirketlerin bir listesi, Borsa İstanbul’un web sitesi olan <a href="https://www.borsaistanbul.com/tr/">https://www.borsaistanbul.com/tr/</a> internet adresinde yer almaktadır. Bu listede, şirketlerin kısa bilgileri, hisse senetlerinin fiyatları ve diğer bilgiler yer almaktadır.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="vc_tta-panel" id="1692190163125-65c8c5d4-0178" data-vc-content=".vc_tta-panel-body">
+            <div class="vc_tta-panel-heading">
+              <h4><a href="#1692190163125-65c8c5d4-0178" class="__mPS2id"><span class="vc_tta-title-text">Halka Arz Edilen Hisse Senetleri Nasıl Alınır?</span><i class="vc_tta-controls-icon vc_tta-controls-icon-plus"></i></a></h4>
+            </div>
+            <div class="vc_tta-panel-body" style="height: 0px;">
+              <div class="wpb_text_column wpb_content_element">
+                <div class="wpb_wrapper">
+                  <p>Öncelikle SPK tarafından sermaye piyasalarında faaliyet göstermek üzere yetkilendirilmiş bir aracı kurum nezdinde hesabınızın olması gerekmektedir.</p>
+                  <p>Hesap açtığınız aracı kuruma halka arz için belirlenen tarihler arasında başvurarak, halka arz süreci tamamlandığında payınıza düşen kadar hisse senedini alabilirsiniz.</p>
+                  <p>Halka arz işlemleri tamamlandıktan sonra şirketin hisse senetleri artık Borsa İstanbul’da alım/satım işlemlerine açık hale gelmiş olacaktır. Bu durumda, var olan hesabınız üzerinden artık istediğiniz zaman ve istediğiniz kadar hisse senedi alabilir veya satabilirsiniz.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div ---> 
       </center>
     </div>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2322685685599365" crossorigin="anonymous"></script>
