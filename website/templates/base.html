@@ -24,20 +24,20 @@
           ;(adsbygoogle = window.adsbygoogle || []).push({})
         </script>
         <h3>
-          {% if data[1] >= data[2] %}
+          {% if data["todays_high_xu100"] >= data["all_time_high"] %}
             Rekor kırdı
           {% else %}
             Rekor kırmadı
           {% endif %} <br /><br />
-          {% if data[1] >= data[2] %}
+          {% if data["todays_high_xu100"] >= data["all_time_high"] %}
             <img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExOXB3YXo2YzU2c2F3MjB0Zm9wczlwbmdhdDAwc2V1a2p5cHNzNnhrOCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/AiULidifE382HGxt5U/giphy.gif" />
           {% else %}
             <img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExam5kc3FueG1odXRyM3FqdjVqNWx4ZG1yYXBkMmxqa2Z3a2JveDdmeCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/se5RgFVR3GgfjynNlb/giphy.gif" />
           {% endif %}
         </h3>
-        <h6>Şimdi BIST100 = {{ data[0]|round(2) }}</h6>
-        <h5>Güniçi Rekor BIST100 = {{ data[1]|round(2) }}</h5>
-        <h4>Tüm zamanlar Rekor BIST100 = {{ data[2]|round(2) }} ( {{ data[3] }} )</h4>
+        <h6>Şimdi BIST100 = {{ data["current_xu100"]|round(2) }}</h6>
+        <h5>Güniçi Rekor BIST100 = {{ data["todays_high_xu100"]|round(2) }}</h5>
+        <h4>Tüm zamanlar Rekor BIST100 = {{ data["all_time_high"]|round(2) }} ( {{ data["date_of_all_time_high"] }} )</h4>
         <div>
           <h1>Borsada En Yükselen/Düşen Hisseler</h1>
           <table>
@@ -608,7 +608,7 @@
               </div>
             </div>
           </div>
-        </div --- -->>
+        </div --- -->
       </center>
     </div>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2322685685599365" crossorigin="anonymous"></script>
