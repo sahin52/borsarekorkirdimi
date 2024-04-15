@@ -1,8 +1,9 @@
-from flask import Blueprint, render_template, send_from_directory
+from flask import Blueprint, render_template, send_from_directory, request, jsonify
 import yfinance as yf
 import json 
-from datetime import date
-
+from datetime import datetime, timedelta
+from .models import StockData, db
+from sqlalchemy import func, desc
 
 views = Blueprint('views', __name__)
 
@@ -63,3 +64,76 @@ def dolar_bazinda():
 @views.route('/ads.txt')
 def serve_ads_txt():
     return send_from_directory('static', 'ads.txt')
+
+@views.route('/stocks', methods=['GET'])
+def get_stocks():
+    take = request.args.get('take', default=1, type=int)
+    page_size = request.args.get('page_size', default=10, type=int)
+    asc = request.args.get('asc', default=True, type=bool)
+    range = request.args.get('range', default='1d', type=str)
+
+    if range == '1d':
+        start_date = datetime.now() - timedelta(days=1)
+    elif range == '1w':
+        start_date = datetime.now() - timedelta(weeks=1)
+    elif range == '1m':
+        start_date = datetime.now() - timedelta(days=30)
+    elif range == '3m':
+        start_date = datetime.now() - timedelta(days=90)
+    elif range == '6m':
+        start_date = datetime.now() - timedelta(days=180)
+    elif range == '12m':
+        start_date = datetime.now() - timedelta(days=365)
+
+    # For testing
+    start_date = datetime.now() - timedelta(days=30)
+    query = StockData.query.filter(StockData.date >= start_date)
+
+    if asc:
+        query = query.order_by(StockData.date.asc())
+    else:
+        query = query.order_by(StockData.date.desc())
+
+
+    # ...
+
+    stocks = (
+        db.session.query(
+            StockData.stock_name,
+            (((func.max(StockData.close) - func.min(StockData.close)) / func.min(StockData.close)) * 100)
+            .label("percentage_difference"),
+            func.max(StockData.close).label("latest_close"),
+            func.min(StockData.close).label("first_close"),
+        )
+        .filter(StockData.date >= start_date)
+        .group_by(StockData.stock_name)
+        .order_by("percentage_difference" if asc else desc("percentage_difference"))
+        .paginate(page=take, per_page=page_size, error_out=False)
+        .items
+    )
+
+    return jsonify(
+        {
+            "stocks": [
+                {
+                    "stock_name": stock.stock_name,
+                    "percentage_difference": stock.percentage_difference,
+                    "latest_close": stock.latest_close,
+                    "first_close": stock.first_close,
+                }
+                for stock in stocks
+            ]
+        }
+    )
+# Old Code
+    stocks = query.paginate(page=take, per_page = page_size, error_out=False).items
+
+    return jsonify({
+        'stocks': [
+            {
+                'date': stock.date.isoformat(),
+                'close': stock.close
+            }
+            for stock in stocks
+        ]
+    })

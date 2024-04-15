@@ -8,9 +8,51 @@
     <title>Borsa bugün rekor kırdı mı?</title>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2322685685599365" crossorigin="anonymous"></script>
     <link rel="icon" href="{{ url_for('static', filename = 'icon.png') }}" />
+    <style>
+      #cookie-banner {
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          background-color: #333;
+          color: #fff;
+          button {
+              background-color: #4CAF50;
+              color: white;
+              border: none;
+              cursor: pointer;
+          }
+          padding: 10px 20px;
+          text-align: center;
+      }
+  </style>
   </head>
 
   <body>
+    <div id="cookie-banner">
+      This website uses cookies to ensure you get the best experience. <button id="accept-btn">Accept</button>
+    </div>
+  <script>
+        // Check if user has already given consent
+        const userConsent = localStorage.getItem('cookieConsent');
+
+        if (!userConsent) {
+            // Show cookie consent banner if consent is not given
+            document.getElementById('cookie-banner').style.display = 'block';
+        }else {
+            // Hide cookie consent banner if consent is given
+            document.getElementById('cookie-banner').style.display = 'none';
+        }
+
+        // Function to handle accept button click
+        document.getElementById('accept-btn').addEventListener('click', () => {
+            // Set cookie consent preference
+            localStorage.setItem('cookieConsent', 'true');
+
+            // Hide cookie consent banner
+            document.getElementById('cookie-banner').style.display = 'none';
+        });
+    </script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
     <div class="container">
@@ -42,8 +84,13 @@
           <h1>Borsada En Yükselen/Düşen Hisseler</h1>
           <table>
             <tr>
-              <th>En Yükselen</th>
-              <th>En Düşen</th>
+              <th>Hisse</th>
+              <th>1 gün</th>
+              <th>1 hafta</th>
+              <th>1 ay</th>
+              <th>3 ay</th>
+              <th>6 ay</th>
+              <th>1 yıl</th>
             </tr>
             <tr>
               <td>{{ data[4] }}</td>

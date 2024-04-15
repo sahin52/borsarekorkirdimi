@@ -1,8 +1,12 @@
 from flask import Flask
+from .models import db
+
 
 def create_app():
     app = Flask(__name__)
-    app.config['SECRET_KEY'] = 'asdasdgdsg asdqweq'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///..//stock_data.sqlite3'  # Add this line
+    db.init_app(app)  # Add this line
+    
     from .views import views
     from .auth import auth
 
