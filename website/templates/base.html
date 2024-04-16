@@ -53,6 +53,35 @@
             document.getElementById('cookie-banner').style.display = 'none';
         });
     </script>
+    <script>
+      $(document).ready(function() {
+          var asc = true;
+          var range = '1d';
+
+          $('.sortable').click(function() {
+              var sort = $(this).data('sort');
+              asc = !asc; // Toggle the sort order
+
+              // Update the table with the new data
+              $.get('/stock-increase-rate', { take: 1, page_size: 10, asc: asc, range: range }, function(data) {
+                  // Clear the table
+                  $('#stockTable tbody').empty();
+
+                  // Add the new rows to the table
+                  $.each(data, function(i, item) {
+                      var row = '<tr><td>' + item.stock_name + '</td><td>' + item.date + '</td><td>' + item.interval + '</td><td>' + item.close + '</td><td>' + item.increase_1w + '</td></tr>';
+                      $('#stockTable tbody').append(row);
+                  });
+
+                  // Update the sort icon
+                  $('.sortable').text(function(i, oldText) {
+                      return oldText.replace(' ↓', '').replace(' ↑', '');
+                  });
+                  $(this).append(asc ? ' ↓' : ' ↑');
+              });
+          });
+      });
+      </script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
     <div class="container">
@@ -82,21 +111,21 @@
         <h4>Tüm zamanlar Rekor BIST100 = {{ data["all_time_high"]|round(2) }} ( {{ data["date_of_all_time_high"] }} )</h4>
         <div>
           <h1>Borsada En Yükselen/Düşen Hisseler</h1>
-          <table>
-            <tr>
-              <th>Hisse</th>
-              <th>1 gün</th>
-              <th>1 hafta</th>
-              <th>1 ay</th>
-              <th>3 ay</th>
-              <th>6 ay</th>
-              <th>1 yıl</th>
-            </tr>
-            <tr>
-              <td>{{ data[4] }}</td>
-              <td>{{ data[5] }}</td>
-            </tr>
+          <table id="stockTable">
+            <thead>
+              <tr>
+                  <th class="sortable" data-sort="stock_name">Stock Name</th>
+                  <th class="sortable" data-sort="date">Date</th>
+                  <th class="sortable" data-sort="interval">Interval</th>
+                  <th class="sortable" data-sort="close">Close</th>
+                  <th class="sortable" data-sort="increase_1w">Increase 1w</th>
+              </tr>
+            </thead>
+            <tbody>
+                <!-- Table data goes here -->
+            </tbody>
           </table>
+
           <p>*Veriler teyit edilmelidir, bu verilere dayanarak yapılan işlemlerden sorumluluk kabul edilmemektedir</p>
         </div>
         <div>

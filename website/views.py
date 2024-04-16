@@ -65,8 +65,8 @@ def dolar_bazinda():
 def serve_ads_txt():
     return send_from_directory('static', 'ads.txt')
 
-@views.route('/stocks', methods=['GET'])
-def get_stocks():
+@views.route('/stock-increase-rate', methods=['GET'])
+def get_stock_increase_rates():
     take = request.args.get('take', default=1, type=int)
     page_size = request.args.get('page_size', default=10, type=int)
     asc = request.args.get('asc', default=True, type=bool)
