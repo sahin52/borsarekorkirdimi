@@ -5,8 +5,8 @@ from apscheduler.schedulers.background import BackgroundScheduler  # Corrected i
 
 class Config:
     SCHEDULER_API_ENABLED = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///..//stock_data.sqlite3'
-
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///..//stock_data3.sqlite3'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 def create_app():
     app = Flask(__name__)
