@@ -32,8 +32,6 @@ def home():
         if highest_xu100_value > all_time_high:
             all_time_high = highest_xu100_value
             date_of_all_time_high = date_of_highest_xu100
-            with open('db.json', 'w') as file:
-                json.dump({'allTimeHigh': all_time_high, 'dateOfAllTimeHigh': date_of_all_time_high}, file)
         return {
             'current_xu100': current_xu100,
             'todays_high_xu100': todays_high_xu100,
