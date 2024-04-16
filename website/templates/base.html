@@ -53,17 +53,18 @@
             document.getElementById('cookie-banner').style.display = 'none';
         });
     </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
       $(document).ready(function() {
           var asc = true;
-          var range = '1d';
-
           $('.sortable').click(function() {
+              console.log("clicked")
               var sort = $(this).data('sort');
               asc = !asc; // Toggle the sort order
+              var clickedElement = $(this); // Store the clicked element
 
               // Update the table with the new data
-              $.get('/stock-increase-rate', { take: 1, page_size: 10, asc: asc, range: range }, function(data) {
+              $.get('/stock-increase-rate', { take: 1, page_size: 10, asc: asc, range: sort }, function(data) {
                   // Clear the table
                   $('#stockTable tbody').empty();
 
@@ -77,7 +78,7 @@
                   $('.sortable').text(function(i, oldText) {
                       return oldText.replace(' ↓', '').replace(' ↑', '');
                   });
-                  $(this).append(asc ? ' ↓' : ' ↑');
+                  clickedElement.append(asc ? ' ↓' : ' ↑'); // Use the stored clicked element
               });
           });
       });
@@ -111,6 +112,8 @@
         <h4>Tüm zamanlar Rekor BIST100 = {{ data["all_time_high"]|round(2) }} ( {{ data["date_of_all_time_high"] }} )</h4>
         <div>
           <h1>Borsada En Yükselen/Düşen Hisseler</h1>
+          
+
           <table id="stockTable">
             <thead>
               <tr>
