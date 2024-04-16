@@ -54,35 +54,7 @@
         });
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script>
-      $(document).ready(function() {
-          var asc = true;
-          $('.sortable').click(function() {
-              console.log("clicked")
-              var sort = $(this).data('sort');
-              asc = !asc; // Toggle the sort order
-              var clickedElement = $(this); // Store the clicked element
-
-              // Update the table with the new data
-              $.get('/stock-increase-rate', { take: 1, page_size: 10, asc: asc, range: sort }, function(data) {
-                  // Clear the table
-                  $('#stockTable tbody').empty();
-
-                  // Add the new rows to the table
-                  $.each(data, function(i, item) {
-                      var row = '<tr><td>' + item.stock_name + '</td><td>' + item.date + '</td><td>' + item.interval + '</td><td>' + item.close + '</td><td>' + item.increase_1w + '</td></tr>';
-                      $('#stockTable tbody').append(row);
-                  });
-
-                  // Update the sort icon
-                  $('.sortable').text(function(i, oldText) {
-                      return oldText.replace(' ↓', '').replace(' ↑', '');
-                  });
-                  clickedElement.append(asc ? ' ↓' : ' ↑'); // Use the stored clicked element
-              });
-          });
-      });
-      </script>
+    
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
     <div class="container">
@@ -113,15 +85,75 @@
         <div>
           <h1>Borsada En Yükselen/Düşen Hisseler</h1>
           
+          <script>
+          $(document).ready(function() {
+              var asc = true;
+              $('.sortable').click(function() {
+                  console.log("clicked")
+                  var sort = $(this).data('sort');
+                  asc = !asc; // Toggle the sort order
+                  var clickedElement = $(this); // Store the clicked element
 
+                  // Update the table with the new data
+                  $.get('/stock-increase-rate', { take: 1, page_size: 10, asc: asc, sort: sort }, function(data) {
+                      // Clear the table
+                      $('#stockTable tbody').empty();
+
+                    // Add the new rows to the table
+                    $.each(data, function (i, item) {
+                      var row =
+                        "<tr><td>" +
+                        item.stock_name +
+                        "</td><td>" +
+                        new Date(item.date)?.toISOString().slice(0, 10) +
+                        "</td><td>" +
+                        item.close?.toFixed(2) +
+                        "</td><td>" +
+                        (item.increase_1d * 100)?.toFixed(2) +
+                        "</td><td>" +
+                        (item.increase_1w * 100)?.toFixed(2) +
+                        "</td><td>" +
+                        (item.increase_1m * 100)?.toFixed(2) +
+                        "</td><td>" +
+                        (item.increase_3m * 100)?.toFixed(2) +
+                        "</td><td>" +
+                        (item.increase_6m * 100)?.toFixed(2) +
+                        "</td><td>" +
+                        (item.increase_1y * 100)?.toFixed(2) +
+                        "</td><td>" +
+                        (item.increase_5y * 100)?.toFixed(2) +
+                        "</td><td>" +
+                        (item.increase_10y * 100)?.toFixed(2) +
+                        "</td><td>" +
+                        (item.increase_20y * 100)?.toFixed(2) +
+                        "</td></tr>";
+                      $("#stockTable tbody").append(row);
+                    });
+
+                      // Update the sort icon
+                      $('.sortable').text(function(i, oldText) {
+                          return oldText.replace(' ↓', '').replace(' ↑', '');
+                      });
+                      clickedElement.append(asc ? ' ↓' : ' ↑'); // Use the stored clicked element
+                  });
+              });
+          });
+          </script>
           <table id="stockTable">
             <thead>
               <tr>
                   <th class="sortable" data-sort="stock_name">Stock Name</th>
                   <th class="sortable" data-sort="date">Date</th>
-                  <th class="sortable" data-sort="interval">Interval</th>
                   <th class="sortable" data-sort="close">Close</th>
-                  <th class="sortable" data-sort="increase_1w">Increase 1w</th>
+                  <th class="sortable" data-sort="increase_1d">Gün</th>
+                  <th class="sortable" data-sort="increase_1w">Hafta</th>
+                  <th class="sortable" data-sort="increase_1m">Ay</th>
+                  <th class="sortable" data-sort="increase_3m">3 Ay</th>
+                  <th class="sortable" data-sort="increase_6m">6 Ay</th>
+                  <th class="sortable" data-sort="increase_1y">1 Yıl</th>
+                  <th class="sortable" data-sort="increase_5y">5 Yıl</th>
+                  <th class="sortable" data-sort="increase_10y">10 Yıl</th>
+                  <th class="sortable" data-sort="increase_20y">20 Yıl</th>
               </tr>
             </thead>
             <tbody>
