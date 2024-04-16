@@ -1,8 +1,8 @@
-from flask import Blueprint, render_template, send_from_directory, request, jsonify
+from flask import Blueprint, render_template, send_from_directory, request, jsonify, abort
 import yfinance as yf
 import json 
 from datetime import datetime, timedelta
-from .models import StockData, db
+from .models import StockData, db, Holidays
 from sqlalchemy import desc, asc, not_
 
 views = Blueprint('views', __name__)
@@ -66,6 +66,15 @@ def serve_ads_txt():
 def to_dict(stock):
     return {c.name: getattr(stock, c.name) for c in stock.__table__.columns}
 
+
+@views.route('/data-ad6a65b1-544b-415c-ac85-794c2c8f22e3')
+def data():
+    stocks = StockData.query.all()
+    holidays = Holidays.query.all()
+    return jsonify({
+        'stock': [stock.to_dict() for stock in stocks],
+        'holidays': [holiday.to_dict() for holiday in holidays]
+    })
 
 @views.route('/stock-increase-rate', methods=['GET'])
 def get_stock_increase_rates():
