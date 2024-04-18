@@ -1,0 +1,10 @@
+User-agent: *
+
+# Allow all robots to access everything
+Allow: /
+Allow: /dolar-bazinda/
+
+# Disallow all robots from accessing any file ending with .jpg (example)
+Disallow: /*.jpg
+Disallow: /*.css
+Disallow: /*.png

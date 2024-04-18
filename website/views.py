@@ -2,6 +2,8 @@ from flask import Blueprint, render_template, send_from_directory, request, json
 import yfinance as yf
 import json 
 from datetime import datetime, timedelta
+from flask import current_app
+from website.helper_methods import update_stock_data_in_db
 from .models import StockData, db, Holidays
 from sqlalchemy import desc, asc, not_
 
@@ -63,6 +65,11 @@ def dolar_bazinda():
 def serve_ads_txt():
     return send_from_directory('static', 'ads.txt')
 
+@views.route('/robots.txt')
+def serve_robots_txt():
+    return send_from_directory('static','robots.txt')
+
+
 def to_dict(stock):
     return {c.name: getattr(stock, c.name) for c in stock.__table__.columns}
 
@@ -72,8 +79,8 @@ def data():
     stocks = StockData.query.all()
     holidays = Holidays.query.all()
     return jsonify({
-        'stock': [stock.to_dict() for stock in stocks],
-        'holidays': [holiday.to_dict() for holiday in holidays]
+        'stock': [to_dict(stock) for stock in stocks],
+        'holidays': [to_dict(holiday) for holiday in holidays]
     })
 
 @views.route('/stock-increase-rate', methods=['GET'])
@@ -82,6 +89,9 @@ def get_stock_increase_rates():
     page_size = request.args.get('page_size', default=10, type=int)
     is_asc = request.args.get('asc')
     sort = request.args.get('sort', default='increase_1d', type=str)
+
+    if StockData.query.first() is None:
+        update_stock_data_in_db(current_app, True)
 
 
     
