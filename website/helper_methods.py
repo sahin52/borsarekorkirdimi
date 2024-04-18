@@ -5,148 +5,13 @@ from datetime import datetime
 from dateutil.parser import parse
 import calendar
 import os
-
+import traceback
 def data_exists_in_db():
     """
     Check if the database has any data
     """
 
     return StockData.query.first() is not None
-
-def singleton(func):
-    result = None
-
-    def wrapper(*args, **kwargs):
-        nonlocal result
-        if result is None:
-            result = func(*args, **kwargs)
-        return result
-
-    return wrapper
-
-@singleton
-def fullfill_db():
-    """
-    Fill the database with the data of the last 5 years.
-    singleton, because we dont want this to run multiple times a day
-    """
-    print("LOG: fullfilling database")
-
-    today = datetime.now().strftime("%Y-%m-%d")
-
-    five_years_earlier = (parse(today) - timedelta(days=1850)).strftime("%Y-%m-%d")
-    stocks = ['A1CAP.IS','ACSEL.IS', 'ADEL.IS', 'ADESE.IS','ADGYO.IS','AEFES.IS','AFYON.IS','AGESA.IS','AGHOL.IS','AGROT.IS','AGYO.IS','AHGAZ.IS','AKBNK.IS','AKCNS.IS','AKENR.IS','AKFGY.IS','AKFYE.IS','AKGRT.IS','AKMGY.IS','AKSA.IS','AKSEN.IS','AKSGY.IS','AKSUE.IS','AKYHO.IS','ALARK.IS','ALBRK.IS','ALCAR.IS','ALCTL.IS','ALFAS.IS','ALGYO.IS','ALKA.IS','ALKIM.IS','ALMAD.IS','ALVES.IS','ANELE.IS','ANGEN.IS','ANHYT.IS','ANSGR.IS','ARASE.IS','ARCLK.IS','ARDYZ.IS','ARENA.IS','ARSAN.IS','ARTMS.IS','ARZUM.IS','ASELS.IS','ASGYO.IS','ASTOR.IS','ASUZU.IS','ATAGY.IS','ATAKP.IS','ATATP.IS','ATEKS.IS','ATLAS.IS','ATSYH.IS','AVGYO.IS','AVHOL.IS','AVOD.IS','AVPGY.IS','AVTUR.IS','AYCES.IS','AYDEM.IS','AYEN.IS','AYES.IS','AYGAZ.IS','AZTEK.IS','BAGFS.IS','BAKAB.IS','BALAT.IS','BANVT.IS','BARMA.IS','BASCM.IS','BASGZ.IS','BAYRK.IS','BEGYO.IS','BERA.IS','BEYAZ.IS','BFREN.IS','BIENY.IS','BIGCH.IS','BIMAS.IS','BINHO.IS','BIOEN.IS','BIZIM.IS','BJKAS.IS','BLCYT.IS','BMSCH.IS','BMSTL.IS','BNTAS.IS','BOBET.IS','BORLS.IS','BORSK.IS','BOSSA.IS','BRISA.IS','BRKO.IS','BRKSN.IS','BRKVY.IS','BRLSM.IS','BRMEN.IS','BRSAN.IS','BRYAT.IS','BSOKE.IS','BTCIM.IS','BUCIM.IS','BURCE.IS','BURVA.IS','BVSAN.IS','BYDNR.IS','CANTE.IS','CASA.IS','CATES.IS','CCOLA.IS','CELHA.IS','CEMAS.IS','CEMTS.IS','CEOEM.IS','CIMSA.IS','CLEBI.IS','CMBTN.IS','CMENT.IS','CONSE.IS','COSMO.IS','CRDFA.IS','CRFSA.IS','CUSAN.IS','CVKMD.IS','CWENE.IS','DAGHL.IS','DAGI.IS','DAPGM.IS','DARDL.IS','DENGE.IS','DERHL.IS','DERIM.IS','DESA.IS','DESPC.IS','DEVA.IS','DGATE.IS','DGGYO.IS','DGNMO.IS','DIRIT.IS','DITAS.IS','DJIST.IS','DMRGD.IS','DMSAS.IS','DNISI.IS','DOAS.IS','DOBUR.IS','DOCO.IS','DOFER.IS','DOGUB.IS','DOHOL.IS','DOKTA.IS','DURDO.IS','DYOBY.IS','DZGYO.IS','EBEBK.IS','ECILC.IS','ECZYT.IS','EDATA.IS','EDIP.IS','EGEEN.IS','EGEPO.IS','EGGUB.IS','EGPRO.IS','EGSER.IS','EKGYO.IS','EKIZ.IS','EKOS.IS','EKSUN.IS','ELITE.IS','EMKEL.IS','EMNIS.IS','ENERY.IS','ENJSA.IS','ENKAI.IS','ENSRI.IS','EPLAS.IS','ERBOS.IS','ERCB.IS','EREGL.IS','ERSU.IS','ESCAR.IS','ESCOM.IS','ESEN.IS','ETILR.IS','ETYAT.IS','EUHOL.IS','EUKYO.IS','EUPWR.IS','EUREN.IS','EUYO.IS','EYGYO.IS','FADE.IS','FENER.IS','FLAP.IS','FMIZP.IS','FONET.IS','FORMT.IS','FORTE.IS','FRIGO.IS','FROTO.IS','FZLGY.IS','GARAN.IS','GARFA.IS','GEDIK.IS','GEDZA.IS','GENIL.IS','GENTS.IS','GEREL.IS','GESAN.IS','GIPTA.IS','GLBMD.IS','GLCVY.IS','GLDTR.IS','GLRYH.IS','GLYHO.IS','GMSTR.IS','GMTAS.IS','GOKNR.IS','GOLTS.IS','GOODY.IS','GOZDE.IS','GRNYO.IS','GRSEL.IS','GRTRK.IS','GSDDE.IS','GSDHO.IS','GSRAY.IS','GUBRF.IS','GWIND.IS','GZNMI.IS','HALKB.IS','HATEK.IS','HATSN.IS','HDFGS.IS','HEDEF.IS','HEKTS.IS','HKTM.IS','HLGYO.IS','HTTBT.IS','HUBVC.IS','HUNER.IS','HURGZ.IS','ICBCT.IS','ICUGS.IS','IDGYO.IS','IEYHO.IS','IHAAS.IS','IHEVA.IS','IHGZT.IS','IHLAS.IS','IHLGM.IS','IHYAY.IS','IMASM.IS','INDES.IS','INFO.IS','INGRM.IS','INTEM.IS','INVEO.IS','INVES.IS','IPEKE.IS','ISATR.IS','ISBIR.IS','ISBTR.IS','ISCTR.IS','ISDMR.IS','ISFIN.IS','ISGSY.IS','ISGYO.IS','ISIST.IS','ISKPL.IS','ISKUR.IS','ISMEN.IS','ISSEN.IS','ISYAT.IS','IZENR.IS','IZFAS.IS','IZINV.IS','IZMDC.IS','JANTS.IS','KAPLM.IS','KAREL.IS','KARSN.IS','KARTN.IS','KARYE.IS','KATMR.IS','KAYSE.IS','KBORU.IS','KCAER.IS','KCHOL.IS','KENT.IS','KERVN.IS','KERVT.IS','KFEIN.IS','KGYO.IS','KIMMR.IS','KLGYO.IS','KLKIM.IS','KLMSN.IS','KLNMA.IS','KLRHO.IS','KLSER.IS','KLSYN.IS','KMPUR.IS','KNFRT.IS','KONKA.IS','KONTR.IS','KONYA.IS','KOPOL.IS','KORDS.IS','KOZAA.IS','KOZAL.IS','KRDMA.IS','KRDMB.IS','KRDMD.IS','KRGYO.IS','KRONT.IS','KRPLS.IS','KRSTL.IS','KRTEK.IS','KRVGD.IS','KSTUR.IS','KTLEV.IS','KTSKR.IS','KUTPO.IS','KUVVA.IS','KUYAS.IS','KZBGY.IS','KZGYO.IS','LIDER.IS','LIDFA.IS','LINK.IS','LKMNH.IS','LMKDC.IS','LOGO.IS','LRSHO.IS','LUKSK.IS','MAALT.IS','MACKO.IS','MAGEN.IS','MAKIM.IS','MAKTK.IS','MANAS.IS','MARBL.IS','MARKA.IS','MARTI.IS','MAVI.IS','MEDTR.IS','MEGAP.IS','MEGMT.IS','MEKAG.IS','MEPET.IS','MERCN.IS','MERIT.IS','MERKO.IS','METRO.IS','METUR.IS','MGROS.IS','MHRGY.IS','MIATK.IS','MIPAZ.IS','MMCAS.IS','MNDRS.IS','MNDTR.IS','MOBTL.IS','MOGAN.IS','MPARK.IS','MRGYO.IS','MRSHL.IS','MSGYO.IS','MTRKS.IS','MTRYO.IS','MZHLD.IS','NATEN.IS','NETAS.IS','NIBAS.IS','NTGAZ.IS','NTHOL.IS','NUGYO.IS','NUHCM.IS','OBAMS.IS','OBASE.IS','ODAS.IS','ODINE.IS','OFSYM.IS','ONCSM.IS','ORCAY.IS','ORGE.IS','ORMA.IS','OSMEN.IS','OSTIM.IS','OTKAR.IS','OTTO.IS','OYAKC.IS','OYAYO.IS','OYLUM.IS','OYYAT.IS','OZGYO.IS','OZKGY.IS','OZRDN.IS','OZSUB.IS','PAGYO.IS','PAMEL.IS','PAPIL.IS','PARSN.IS','PASEU.IS','PATEK.IS','PCILT.IS','PEGYO.IS','PEKGY.IS','PENGD.IS','PENTA.IS','PETKM.IS','PETUN.IS','PGSUS.IS','PINSU.IS','PKART.IS','PKENT.IS','PLTUR.IS','PNLSN.IS','PNSUT.IS','POLHO.IS','POLTK.IS','PRDGS.IS','PRKAB.IS','PRKME.IS','PRZMA.IS','PSDTC.IS','PSGYO.IS','QNBFB.IS','QNBFL.IS','QUAGR.IS','RALYH.IS','RAYSG.IS','REEDR.IS','RNPOL.IS','RODRG.IS','RTALB.IS','RUBNS.IS','RYGYO.IS','RYSAS.IS','SAFKR.IS','SAHOL.IS','SAMAT.IS','SANEL.IS','SANFM.IS','SANKO.IS','SARKY.IS','SASA.IS','SAYAS.IS','SDTTR.IS','SEGYO.IS','SEKFK.IS','SEKUR.IS','SELEC.IS','SELGD.IS','SELVA.IS','SEYKM.IS','SILVR.IS','SISE.IS','SKBNK.IS','SKTAS.IS','SKYLP.IS','SKYMD.IS','SMART.IS','SMRTG.IS','SNGYO.IS','SNICA.IS','SNKRN.IS','SNPAM.IS','SODSN.IS','SOKE.IS','SOKM.IS','SONME.IS','SRVGY.IS','SUMAS.IS','SUNTK.IS','SURGY.IS','SUWEN.IS','TABGD.IS','TARKM.IS','TATEN.IS','TATGD.IS','TAVHL.IS','TBORG.IS','TCELL.IS','TDGYO.IS','TEKTU.IS','TERA.IS','TETMT.IS','TEZOL.IS','TGSAS.IS','THYAO.IS','TKFEN.IS','TKNSA.IS','TLMAN.IS','TMPOL.IS','TMSN.IS','TNZTP.IS','TOASO.IS','TRCAS.IS','TRGYO.IS','TRILC.IS','TSGYO.IS','TSKB.IS','TSPOR.IS','TTKOM.IS','TTRAK.IS','TUCLK.IS','TUKAS.IS','TUPRS.IS','TUREX.IS','TURGG.IS','TURSG.IS','UFUK.IS','ULAS.IS','ULKER.IS','ULUFA.IS','ULUSE.IS','ULUUN.IS','UMPAS.IS','UNLU.IS','USAK.IS','USDTR.IS','UZERB.IS','VAKBN.IS','VAKFN.IS','VAKKO.IS','VANGD.IS','VBTYZ.IS','VERTU.IS','VERUS.IS','VESBE.IS','VESTL.IS','VKFYO.IS','VKGYO.IS','VKING.IS','VRGYO.IS','X030S.IS','X100S.IS','XBANA.IS','XBANK.IS','XBLSM.IS','XELKT.IS','XFINK.IS','XGIDA.IS','XGMYO.IS','XHARZ.IS','XHOLD.IS','XILTM.IS','XINSA.IS','XKAGT.IS','XKMYA.IS','XKOBI.IS','XKURY.IS','XMADN.IS','XMANA.IS','XMESY.IS','XSADA.IS','XSANK.IS','XSANT.IS','XSBAL.IS','XSBUR.IS','XSDNZ.IS','XSGRT.IS','XSIST.IS','XSIZM.IS','XSKAY.IS','XSKOC.IS','XSKON.IS','XSPOR.IS','XSTKR.IS','XTAST.IS','XTCRT.IS','XTEKS.IS','XTM25.IS','XTMTU.IS','XTRZM.IS','XTUMY.IS','XU030.IS','XU050.IS','XU100.IS','XUHIZ.IS','XULAS.IS','XUMAL.IS','XUSIN.IS','XUSRD.IS','XUTEK.IS','XUTUM.IS','XYLDZ.IS','XYORT.IS','XYUZO.IS','YAPRK.IS','YATAS.IS','YAYLA.IS','YBTAS.IS','YEOTK.IS','YESIL.IS','YGGYO.IS','YGYO.IS','YKBNK.IS','YKSLN.IS','YONGA.IS','YUNSA.IS','YYAPI.IS','YYLGD.IS','Z30EA.IS','Z30KE.IS','Z30KP.IS','ZEDUR.IS','ZELOT.IS','ZGOLD.IS','ZOREN.IS','ZPBDL.IS','ZPLIB.IS','ZPT10.IS','ZPX30.IS','ZRE20.IS','ZRGYO.IS','ZTM15.IS']
-    if( os.getenv('DEV_ENVIRONMENT')):
-        stocks = ['A1CAP.IS','ACSEL.IS', 'ADEL.IS', 'ADESE.IS','ADGYO.IS','AEFES.IS','AFYON.IS','AGESA.IS','AGHOL.IS','AGROT.IS','XU100.IS']
-        print("LOG: Running in Development mode, limiting stocks")
-
-    all_data = yf.download(stocks, start=five_years_earlier, end=(datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d"))
-    
-    #region HOLIDAYS
-    # understand holidays and add to holidays table
-    # get first date in data
-    first_date = all_data.index[0].strftime("%Y-%m-%d")
-    yesterday = (parse(today) - timedelta(days=1)).strftime("%Y-%m-%d")
-    all_dates_in_data = set(all_data.index.strftime("%Y-%m-%d"))
-    holiday_data = []
-    # for from the first date to yesterday, check if there is a data
-    for i in range((parse(yesterday) - parse(first_date)).days):
-        date = (parse(first_date) + timedelta(days=i)).strftime("%Y-%m-%d") 
-        # check if that date exists in the data
-        if date not in all_dates_in_data:
-            holiday_data.append(Holidays(date=date, is_holiday=True))
-        else:
-            holiday_data.append(Holidays(date=date, is_holiday=False))
-    Holidays.add_all(holiday_data)
-    #endregion
-    
-#region XU100 RECORD
-    # get the data of XU100
-    xu100_data = all_data['Close']['XU100.IS']
-    # get date of the latest price
-    latest_price_date = xu100_data.index[-1].strftime("%Y-%m-%d")
-    # get latest price
-    latest_price = xu100_data.iloc[-1]
-    # get the highest price ever in the data
-    # but firstly we will filter to only last year
-    high_prices = all_data['High']['XU100.IS']
-    last_year_data = high_prices[high_prices.index >= (datetime.now() - timedelta(days=500))]
-    highest_price = last_year_data.max()
-    # get the date of the highest price
-    highest_price_date = last_year_data.idxmax().strftime("%Y-%m-%d")
-    
-    # get todays highest price
-    todays_highest_price = all_data['High']['XU100.IS'].iloc[-1]
-    # add the data to db
-
-    # all_time_high_usd = 510.37 # HARD CODED, since it is so hard for this record to get broken, may update in 3 years
-    # date_of_all_time_high_usd = "2013-05-17"
-    xu100 = XU100(latest_price_date=latest_price_date, 
-                  last_record=highest_price, 
-                  last_record_date=highest_price_date, 
-                  latest_update_date=datetime.now(),
-                  latest_price=latest_price,
-                  todays_highest_price=todays_highest_price,
-                #   all_time_high_usd=all_time_high_usd,
-                #   date_of_all_time_high_usd=date_of_all_time_high_usd
-                  )
-    XU100.add(xu100)
-
-#endregion
-
-    
-    stocks_data_to_add_to_db = []
-    latest_day_in_data = all_data.index[-1].strftime("%Y-%m-%d")
-    all_data_close = all_data['Close']
-    for stock in stocks:
-        for i, (date, close_price) in enumerate(all_data_close[stock].items()):
-            # if the date is the latest date in the data, we will calculate the increase value
-            datestr = date.strftime("%Y-%m-%d")
-            if(latest_day_in_data == datestr):
-                stock_data = StockData(stock_name=stock)
-                stock_data.date = datestr
-                stock_data.close = close_price
-                previous_day_close = all_data['Close'][stock].iloc[i-1]
-                stock_data.increase_1d = (stock_data.close - previous_day_close) / previous_day_close
-                one_week_earlier = parse(datestr) - timedelta(days=7)
-                next_work_day_after_one_week = get_next_work_day(one_week_earlier.strftime("%Y-%m-%d"))
-                if(next_work_day_after_one_week is not None):
-                    previous_week_close = all_data['Close'][stock].loc[next_work_day_after_one_week]
-                    stock_data.increase_1w = (stock_data.close - previous_week_close) / previous_week_close
-                one_month_earlier = parse(datestr) - timedelta(days=get_days_in_last_month())
-                next_work_day_after_one_month = get_next_work_day(one_month_earlier.strftime("%Y-%m-%d"))
-                if(next_work_day_after_one_month is not None):
-                    previous_month_close = all_data['Close'][stock].loc[next_work_day_after_one_month]
-                    stock_data.increase_1m = (stock_data.close - previous_month_close) / previous_month_close
-                three_months_earlier = parse(datestr) - timedelta(days=91)
-                next_work_day_after_three_months = get_next_work_day(three_months_earlier.strftime("%Y-%m-%d"))
-                if(next_work_day_after_three_months is not None):
-                    previous_3m_close = all_data['Close'][stock].loc[next_work_day_after_three_months]
-                    stock_data.increase_3m = (stock_data.close - previous_3m_close) / previous_3m_close
-                six_months_earlier = parse(datestr) - timedelta(days=183)
-                next_work_day_after_six_months = get_next_work_day(six_months_earlier.strftime("%Y-%m-%d"))
-                if(next_work_day_after_six_months is not None):
-                    previous_6m_close = all_data['Close'][stock].loc[next_work_day_after_six_months]
-                    stock_data.increase_6m = (stock_data.close - previous_6m_close) / previous_6m_close
-                one_year_earlier = parse(datestr) - timedelta(days=365)
-                next_work_day_after_one_year = get_next_work_day(one_year_earlier.strftime("%Y-%m-%d"))
-                if(next_work_day_after_one_year is not None):
-                    previous_1y_close = all_data['Close'][stock].loc[next_work_day_after_one_year]
-                    stock_data.increase_1y = (stock_data.close - previous_1y_close) / previous_1y_close
-                five_years_earlier = parse(datestr) - timedelta(days=1826)
-                next_work_day_after_five_years = get_next_work_day(five_years_earlier.strftime("%Y-%m-%d"))
-                if(next_work_day_after_five_years is not None):
-                    previous_5y_close = all_data['Close'][stock].loc[next_work_day_after_five_years]
-                    stock_data.increase_5y = (stock_data.close - previous_5y_close) / previous_5y_close
-                stocks_data_to_add_to_db.append(stock_data)
-            else:
-                stock_data = StockData(stock_name=stock)
-                stock_data.date = datestr
-                # stock_data.interval = "1d"
-                stock_data.close = close_price
-                stocks_data_to_add_to_db.append(stock_data)
-    StockData.add_all(stocks_data_to_add_to_db)
-    print("LOG: database fullfilled")
 
 def update_stock_data_in_db(app):
 
@@ -156,7 +21,7 @@ def update_stock_data_in_db(app):
 
     with app.app_context():
         try:
-            if (data_exists_in_db() and is_working_hour(datetime.now().hour, datetime.now().minute)):
+            if (data_exists_in_db() and not is_working_hour(datetime.now().hour, datetime.now().minute)):
                 return # if there is data and it is not working hour, let it go
             if((UpdateToDb.get_latest_update() is not None) and UpdateToDb.get_latest_update() > (datetime.now() - timedelta(minutes=15))):
                 return # return if the latest update is within 15 minutes - only update every 15 minutes
@@ -165,11 +30,9 @@ def update_stock_data_in_db(app):
 
             last_working_day = datetime.now().strftime("%Y-%m-%d") # initially today
             if((datetime.now().hour < 10 or (datetime.now().hour == 10 and datetime.now().minute < 16))): # if morning hours, we will get the data of yesterday
-                last_working_day = get_last_work_day(parse(last_working_day) - timedelta(days=1)).strftime("%Y-%m-%d")
+                last_working_day = get_last_work_day((parse(last_working_day) - timedelta(days=1)).strftime("%Y-%m-%d"))
 
-            one_day_earlier = (parse(last_working_day) - timedelta(days=1)).strftime("%Y-%m-%d")
-            if(check_is_holiday(one_day_earlier)):
-                one_day_earlier = get_last_work_day(one_day_earlier)
+            one_day_earlier = get_last_work_day((parse(last_working_day) - timedelta(days=1)).strftime("%Y-%m-%d"))
             today = datetime.now().strftime("%Y-%m-%d")
             # for other dates, we will return the difference for specific days
             one_week_earlier = get_last_work_day((parse(today) - timedelta(days=7)).strftime("%Y-%m-%d"))
@@ -279,9 +142,46 @@ def update_stock_data_in_db(app):
                 stock_data.increase_5y = (latest_data_from_yfinance['Close'][stock].iloc[-1] - data_for_five_years_earlier['Close'][stock].iloc[-1]) / data_for_five_years_earlier['Close'][stock].iloc[-1]
                 stock_datas.append(stock_data)
             StockData.add_all(stock_datas)
+            
+            #region XU100 RECORD
+            # get the data of XU100
+            all_data = yf.download('XU100.IS', start=one_year_earlier, end=(datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d"))
+            xu100_data = all_data['Close']
+            # get date of the latest price
+            latest_price_date = xu100_data.index[-1].strftime("%Y-%m-%d")
+            # get latest price
+            latest_price = xu100_data.iloc[-1]
+            # get the highest price ever in the data
+            # but firstly we will filter to only last year
+            high_prices = all_data['High']
+            last_year_data = high_prices[high_prices.index >= (datetime.now() - timedelta(days=500))]
+            highest_price = last_year_data.max()
+            # get the date of the highest price
+            highest_price_date = last_year_data.idxmax().strftime("%Y-%m-%d")
+            
+            # get todays highest price
+            todays_highest_price = all_data['High'].iloc[-1]
+            # add the data to db
+
+            # all_time_high_usd = 510.37 # HARD CODED, since it is so hard for this record to get broken, may update in 3 years
+            # date_of_all_time_high_usd = "2013-05-17"
+            xu100 = XU100(latest_price_date=latest_price_date, 
+                        last_record=highest_price, 
+                        last_record_date=highest_price_date, 
+                        latest_update_date=datetime.now(),
+                        latest_price=latest_price,
+                        todays_highest_price=todays_highest_price,
+                        #   all_time_high_usd=all_time_high_usd,
+                        #   date_of_all_time_high_usd=date_of_all_time_high_usd
+                        )
+            XU100.add(xu100)
+
+        #endregion
+
             UpdateToDb.set_latest_update()
         except Exception as e:
             print("ERROR_OCCURED:", e)
+            traceback.print_exc()
             return
 
 

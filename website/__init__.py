@@ -4,6 +4,7 @@ from .models import db
 from apscheduler.schedulers.background import BackgroundScheduler  # Corrected import
 from dotenv import load_dotenv
 import os
+import logging
 
 # Load the variables from the .env file
 load_dotenv()
@@ -21,8 +22,14 @@ def create_app():
     db.init_app(app)
     with app.app_context():
         db.create_all() # Create the database tables
+    
+    # Get the apscheduler logger
+    apscheduler_logger = logging.getLogger('apscheduler')
+    # Set its level to ERROR
+    apscheduler_logger.setLevel(logging.ERROR)
+    
     scheduler = BackgroundScheduler()  # Corrected class name
-    scheduler.add_job(id='Scheduled task', func=update_stock_data_in_db, args=[app], trigger='interval', minutes=1)
+    scheduler.add_job(id='Scheduled task', func=update_stock_data_in_db, args=[app], trigger='interval', seconds=3)
     scheduler.start()
 
     from .views import views

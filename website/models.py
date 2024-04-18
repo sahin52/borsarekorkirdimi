@@ -50,10 +50,11 @@ class StockData(db.Model):
         db.session.commit()
 
 class UpdateToDb(db.Model):
+    data_id = db.Column(db.Integer, primary_key=True)
     last_update = db.Column(db.DateTime)
 
     @classmethod
-    def set_latest_update():
+    def set_latest_update(cls):
         latest_update = UpdateToDb.query.first()
         if(latest_update is None):
             latest_update = UpdateToDb(last_update = datetime.now())

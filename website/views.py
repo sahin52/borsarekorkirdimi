@@ -3,7 +3,7 @@ import yfinance as yf
 import json 
 from datetime import datetime, timedelta
 from flask import current_app
-from website.helper_methods import fullfill_db, update_stock_data_in_db
+from website.helper_methods import update_stock_data_in_db
 from .models import XU100, StockData, db, Holidays
 from sqlalchemy import desc, asc, not_
 
@@ -11,9 +11,6 @@ views = Blueprint('views', __name__)
 
 def get_xu100_data():
     # Get current xu100 value
-    latest_res = XU100.query.order_by(XU100.latest_update_date.desc()).first()
-    if(latest_res is None):
-        fullfill_db()
     latest_res = XU100.query.order_by(XU100.latest_update_date.desc()).first()
     
     return {
