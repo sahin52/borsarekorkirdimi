@@ -89,7 +89,7 @@ def get_stock_increase_rates():
     sort = request.args.get('sort', default='increase_1d', type=str)
 
     if StockData.query.first() is None:
-        update_stock_data_in_db(current_app, True)
+        update_stock_data_in_db(current_app)
 
 
     

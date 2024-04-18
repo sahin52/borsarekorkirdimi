@@ -1,5 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import DateTime
+from datetime import datetime
+
 
 db = SQLAlchemy()
 
@@ -46,6 +48,22 @@ class StockData(db.Model):
     def add_all(cls, stocks):
         db.session.add_all(stocks)
         db.session.commit()
+
+class UpdateToDb(db.Model):
+    last_update = db.Column(db.DateTime)
+
+    @classmethod
+    def set_latest_update():
+        latest_update = UpdateToDb.query.first()
+        if(latest_update is None):
+            latest_update = UpdateToDb(last_update = datetime.now())
+        db.session.add(latest_update)
+        db.session.commit()
+
+    @classmethod
+    def get_latest_update(cls):
+        return UpdateToDb.query.first()
+    
 
 class Holidays(db.Model):
     __tablename__ = 'Holidays'
