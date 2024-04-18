@@ -40,11 +40,9 @@ def dolar_bazinda():
         current_xu100_usd = current_xu100 / currentUsdTry
 
         # Read the all-time high from the JSON file
-        with open('db.json', 'r') as file:
-            data = json.load(file)
-            all_time_high = data['allTimeHighUSD']
-            date_of_all_time_high = data['dateOfAllTimeHighUSD']
-        return current_xu100_usd, all_time_high, date_of_all_time_high
+        # latest_res = XU100.query.filter(XU100.all_time_high_usd is not None).order_by(XU100.latest_update_date.desc()).first()
+        #TODO: hard coded date and value
+        return current_xu100_usd, 510.37,  "2013-05-17"
     return render_template("dolar-bazinda.html", data=get_xu100_usd_data())
 
 @views.route('/ads.txt')

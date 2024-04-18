@@ -14,6 +14,9 @@ class XU100(db.Model):
     last_record = db.Column(db.Float)
     last_record_date = db.Column(db.String)
     todays_highest_price = db.Column(db.Float)
+
+    # date_of_all_time_high_usd = db.Column(db.String)
+    # all_time_high_usd = db.Column(db.Float)
     
     @classmethod
     def add(cls, xu100):

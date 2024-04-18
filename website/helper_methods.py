@@ -78,12 +78,17 @@ def fullfill_db():
     # get todays highest price
     todays_highest_price = all_data['High']['XU100.IS'].iloc[-1]
     # add the data to db
+
+    # all_time_high_usd = 510.37 # HARD CODED, since it is so hard for this record to get broken, may update in 3 years
+    # date_of_all_time_high_usd = "2013-05-17"
     xu100 = XU100(latest_price_date=latest_price_date, 
                   last_record=highest_price, 
                   last_record_date=highest_price_date, 
                   latest_update_date=datetime.now(),
                   latest_price=latest_price,
-                  todays_highest_price=todays_highest_price
+                  todays_highest_price=todays_highest_price,
+                #   all_time_high_usd=all_time_high_usd,
+                #   date_of_all_time_high_usd=date_of_all_time_high_usd
                   )
     XU100.add(xu100)
 
