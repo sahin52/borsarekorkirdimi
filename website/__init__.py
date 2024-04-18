@@ -1,4 +1,5 @@
 from flask import Flask
+from .helper_methods import update_stock_data_in_db
 from .models import db
 from apscheduler.schedulers.background import BackgroundScheduler  # Corrected import
 
@@ -15,7 +16,7 @@ def create_app():
     with app.app_context():
         db.create_all() # Create the database tables
     scheduler = BackgroundScheduler()  # Corrected class name
-    # scheduler.add_job(id='Scheduled task', func=get_historical_stock_data, trigger='interval', seconds=3)
+    scheduler.add_job(id='Scheduled task', func=update_stock_data_in_db, args=[app, False], trigger='interval', seconds=3)
     scheduler.start()
 
     from .views import views
