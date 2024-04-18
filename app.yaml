@@ -2,3 +2,8 @@ runtime: python39
 entrypoint: gunicorn -b :$PORT main:app
 env_variables:
   FLASK_ENV: production
+
+handlers:
+- url: /.*
+  script: auto
+  secure: always
