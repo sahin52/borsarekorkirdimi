@@ -2,11 +2,17 @@ from flask import Flask
 from .helper_methods import update_stock_data_in_db
 from .models import db
 from apscheduler.schedulers.background import BackgroundScheduler  # Corrected import
+from dotenv import load_dotenv
+import os
 
+# Load the variables from the .env file
+load_dotenv()
+
+# Get the value of the MEMORY variable
 
 class Config:
     SCHEDULER_API_ENABLED = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
+    SQLALCHEMY_DATABASE_URI = os.getenv('FLASK_SQLITE_PATH') or 'sqlite:///:memory:'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 def create_app():
