@@ -7,8 +7,8 @@ class StockData(db.Model):
     __tablename__ = 'StockData'
     data_id = db.Column(db.Integer, primary_key=True)
     stock_name = db.Column(db.String)
-    date = db.Column(DateTime)
-    interval = db.Column(db.String)
+    date = db.Column(db.String) # in yyyy-MM-dd format
+    # interval = db.Column(db.String)
     close = db.Column(db.Float)
     increase_1d = db.Column(db.Float)
     increase_1w = db.Column(db.Float)
@@ -24,7 +24,10 @@ class StockData(db.Model):
     def add(cls, stock):
         db.session.add(stock)
         db.session.commit()
-
+    @classmethod
+    def add_all(cls, stocks):
+        db.session.add_all(stocks)
+        db.session.commit()
 
 class Holidays(db.Model):
     __tablename__ = 'Holidays'
@@ -38,12 +41,16 @@ class Holidays(db.Model):
     def add(cls, holiday):
         db.session.add(holiday)
         db.session.commit()
-    
+    @classmethod
+    def add_all(cls, holidays):
+        db.session.add_all(holidays)
+        db.session.commit()
     @classmethod
     def is_holiday(cls, date):
         holiday = Holidays.query.filter(Holidays.date == date).first()
         if holiday:
             return holiday.is_holiday
         return False
+    @classmethod
     def does_date_exist(cls, date):
         return Holidays.query.filter(Holidays.date == date).first() is not None
