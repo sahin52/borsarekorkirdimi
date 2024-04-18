@@ -17,8 +17,6 @@ class StockData(db.Model):
     increase_6m = db.Column(db.Float)
     increase_1y = db.Column(db.Float)
     increase_5y = db.Column(db.Float)
-    increase_10y = db.Column(db.Float)
-    increase_20y = db.Column(db.Float)
     
     @classmethod
     def add(cls, stock):

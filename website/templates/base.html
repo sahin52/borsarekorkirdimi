@@ -122,10 +122,6 @@
                         (item.increase_1y * 100)?.toFixed(2) +
                         "</td><td>" +
                         (item.increase_5y * 100)?.toFixed(2) +
-                        "</td><td>" +
-                        (item.increase_10y * 100)?.toFixed(2) +
-                        "</td><td>" +
-                        (item.increase_20y * 100)?.toFixed(2) +
                         "</td></tr>";
                       $("#stockTable tbody").append(row);
                     });
@@ -152,8 +148,6 @@
                   <th class="sortable" data-sort="increase_6m">6 Ay</th>
                   <th class="sortable" data-sort="increase_1y">1 Yıl</th>
                   <th class="sortable" data-sort="increase_5y">5 Yıl</th>
-                  <th class="sortable" data-sort="increase_10y">10 Yıl</th>
-                  <th class="sortable" data-sort="increase_20y">20 Yıl</th>
               </tr>
             </thead>
             <tbody>

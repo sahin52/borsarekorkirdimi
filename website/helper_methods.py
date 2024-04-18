@@ -3,6 +3,8 @@ from .models import StockData, db, Holidays
 import yfinance as yf
 from datetime import datetime
 from dateutil.parser import parse
+import calendar
+
 
 def data_exists_in_db():
     """
@@ -54,20 +56,37 @@ def fullfill_db():
                 stock_data.date = datestr
                 stock_data.close = close_price
                 previous_day_close = all_data['Close'][stock].iloc[i-1]
-                increase_1d = (stock_data.close - previous_day_close) / previous_day_close
-                stock_data.increase_1d = increase_1d
-                previous_week_close = all_data['Close'][stock].iloc[i-7]
-                stock_data.increase_1w = (stock_data.close - previous_week_close) / previous_week_close
-                previous_month_close = all_data['Close'][stock].iloc[i-30]
-                stock_data.increase_1m = (stock_data.close - previous_month_close) / previous_month_close
-                previous_3m_close = all_data['Close'][stock].iloc[i-91]
-                stock_data.increase_3m = (stock_data.close - previous_3m_close) / previous_3m_close
-                previous_6m_close = all_data['Close'][stock].iloc[i-182]
-                stock_data.increase_6m = (stock_data.close - previous_6m_close) / previous_6m_close
-                previous_1y_close = all_data['Close'][stock].iloc[i-365]
-                stock_data.increase_1y = (stock_data.close - previous_1y_close) / previous_1y_close
-                previous_5y_close = all_data['Close'][stock].iloc[i-1826]
-                stock_data.increase_5y = (stock_data.close - previous_5y_close) / previous_5y_close
+                stock_data.increase_1d = (stock_data.close - previous_day_close) / previous_day_close
+                one_week_earlier = parse(datestr) - timedelta(days=7)
+                next_work_day_after_one_week = get_next_work_day(one_week_earlier.strftime("%Y-%m-%d"))
+                if(next_work_day_after_one_week is not None):
+                    previous_week_close = all_data['Close'][stock].loc[next_work_day_after_one_week]
+                    stock_data.increase_1w = (stock_data.close - previous_week_close) / previous_week_close
+                one_month_earlier = parse(datestr) - timedelta(days=get_days_in_last_month())
+                next_work_day_after_one_month = get_next_work_day(one_month_earlier.strftime("%Y-%m-%d"))
+                if(next_work_day_after_one_month is not None):
+                    previous_month_close = all_data['Close'][stock].loc[next_work_day_after_one_month]
+                    stock_data.increase_1m = (stock_data.close - previous_month_close) / previous_month_close
+                three_months_earlier = parse(datestr) - timedelta(days=91)
+                next_work_day_after_three_months = get_next_work_day(three_months_earlier.strftime("%Y-%m-%d"))
+                if(next_work_day_after_three_months is not None):
+                    previous_3m_close = all_data['Close'][stock].loc[next_work_day_after_three_months]
+                    stock_data.increase_3m = (stock_data.close - previous_3m_close) / previous_3m_close
+                six_months_earlier = parse(datestr) - timedelta(days=183)
+                next_work_day_after_six_months = get_next_work_day(six_months_earlier.strftime("%Y-%m-%d"))
+                if(next_work_day_after_six_months is not None):
+                    previous_6m_close = all_data['Close'][stock].loc[next_work_day_after_six_months]
+                    stock_data.increase_6m = (stock_data.close - previous_6m_close) / previous_6m_close
+                one_year_earlier = parse(datestr) - timedelta(days=365)
+                next_work_day_after_one_year = get_next_work_day(one_year_earlier.strftime("%Y-%m-%d"))
+                if(next_work_day_after_one_year is not None):
+                    previous_1y_close = all_data['Close'][stock].loc[next_work_day_after_one_year]
+                    stock_data.increase_1y = (stock_data.close - previous_1y_close) / previous_1y_close
+                five_years_earlier = parse(datestr) - timedelta(days=1826)
+                next_work_day_after_five_years = get_next_work_day(five_years_earlier.strftime("%Y-%m-%d"))
+                if(next_work_day_after_five_years is not None):
+                    previous_5y_close = all_data['Close'][stock].loc[next_work_day_after_five_years]
+                    stock_data.increase_5y = (stock_data.close - previous_5y_close) / previous_5y_close
                 stocks_data_to_add_to_db.append(stock_data)
             else:
                 stock_data = StockData(stock_name=stock)
@@ -172,9 +191,10 @@ def get_next_work_day(date):
     date must be in "yyyy-MM-dd" format
     returns date as string in "yyyy-MM-dd" format
     returns the given date if it is not a holiday
+    TODO: create a better way, this is not efficient
     """
     if parse(date) > datetime.now():
-        raise ValueError("ERROR: The given date is later than today.")
+        return None
     
     while check_is_holiday(date):
         date = (parse(date) + timedelta(days=1)).strftime("%Y-%m-%d")
@@ -203,7 +223,7 @@ def check_is_holiday(date):
 
     if(parse(date).weekday() >= 5):
         return True
-    if(parse(date) > datetime.now()): # the date has not come yet, this should not enter here, just in case returned false
+    if(parse(date) > datetime.now()): # the date has not come yet, you should not be checking if a later date is a holiday because we are not sure
         raise ValueError("ERROR: The given date is later than today.")
  
     
@@ -211,19 +231,20 @@ def check_is_holiday(date):
     if(does_date_exist):
         return Holidays.check_is_holiday(date)
     does_xu100_data_exist = check_is_holiday_from_xu100(date)
-    if(does_xu100_data_exist):
-        Holidays.add(Holidays(date=date, is_holiday=False))
-        return False
-    if 10 < datetime.now().hour < 18: # The data does not exist even though it is working hour # TODO: check if the date is today or later
+    if(does_xu100_data_exist): # it is not a holiday, xu100 data exist
         Holidays.add(Holidays(date=date, is_holiday=True))
         return True
-    return True
+    if 10 < datetime.now().hour < 18: # The data does not exist even though it is working hour
+        Holidays.add(Holidays(date=date, is_holiday=True))
+        return True
+    return False
 
 def check_is_holiday_from_xu100(date):
     """
     uses yfinance to check if xu100 data exists for the date
     date must be in "yyyy-MM-dd" format
     checks the local db also first
+    ##### returns true if the date is holiday
     """
     # Check if today is a holiday
     date_parsed = parse(date)
@@ -232,8 +253,20 @@ def check_is_holiday_from_xu100(date):
     if xu100_from_db.first() is not None:
         return False
     data = yf.download('XU100.IS', start=date, end=one_day_later)
-    return not data.empty # If the data is empty, it means that the date is a holiday
+    is_holiday = data.empty
+    return is_holiday # If the data is empty, it means that the date is a holiday
 
+def get_days_in_last_month():
+    """
+    returns how many days does the last month have
+    """
+    current_date = datetime.now()
+    first_day_of_current_month = current_date.replace(day=1)
+    last_day_of_previous_month = first_day_of_current_month - timedelta(days=1)
+    last_month = last_day_of_previous_month.month
+    year_of_last_month = last_day_of_previous_month.year
+    days_in_last_month = calendar.monthrange(year_of_last_month, last_month)[1]
+    return days_in_last_month
 
 # region Tests
 

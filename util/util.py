@@ -104,8 +104,6 @@ def save_stocks_with_increase_rates():
             increase_6m FLOAT,
             increase_1y FLOAT,
             increase_5y FLOAT,
-            increase_10y FLOAT,
-            increase_20y FLOAT,
             UNIQUE(stock_name, date, interval)
         )
     ''')
@@ -190,36 +188,18 @@ def save_stocks_with_increase_rates():
             else:
                 increase_5y = None
 
-            ten_year_ago = today_data.index[i] - pd.DateOffset(years=10)
-            last_valid_date_ten_year = data.index.asof(ten_year_ago)
-            
-            # Calculate the 10-year increase
-            if pd.notnull(last_valid_date_ten_year):
-                increase_10y = (close - data[last_valid_date_ten_year]) / data[last_valid_date_ten_year]
-            else:
-                increase_10y = None
-
-            twenty_year_ago = today_data.index[i] - pd.DateOffset(years=20)
-            last_valid_date_twenty_year = data.index.asof(twenty_year_ago)
-
-            # Calculate the 20-year increase
-            if pd.notnull(last_valid_date_twenty_year):
-                increase_20y = (close - data[last_valid_date_twenty_year]) / data[last_valid_date_twenty_year]
-            else:
-                increase_20y = None
-
 
 
             # Insert the data into the database
             try:
 
                 conn.execute('''
-                    INSERT INTO StockData (stock_name, date, interval, close, increase_1d, increase_1w, increase_1m, increase_3m, increase_6m, increase_1y, increase_5y, increase_10y, increase_20y)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                ''', (stock, date, '1d', close, increase_1d, increase_1w, increase_1m, increase_3m, increase_6m, increase_1y, increase_5y, increase_10y, increase_20y))
+                    INSERT INTO StockData (stock_name, date, interval, close, increase_1d, increase_1w, increase_1m, increase_3m, increase_6m, increase_1y, increase_5y)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ''', (stock, date, '1d', close, increase_1d, increase_1w, increase_1m, increase_3m, increase_6m, increase_1y, increase_5y))
             except Exception as e:
                 print(e)
-                print(stock, date, '1d', close, increase_1d, increase_1w, increase_1m, increase_3m, increase_6m, increase_1y, increase_5y, increase_10y, increase_20y)
+                print(stock, date, '1d', close, increase_1d, increase_1w, increase_1m, increase_3m, increase_6m, increase_1y, increase_5y)
     # Commit the changes and close the connection
     conn.commit()
     conn.close()
