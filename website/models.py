@@ -46,7 +46,7 @@ class Holidays(db.Model):
         db.session.add_all(holidays)
         db.session.commit()
     @classmethod
-    def is_holiday(cls, date):
+    def check_is_holiday(cls, date):
         holiday = Holidays.query.filter(Holidays.date == date).first()
         if holiday:
             return holiday.is_holiday

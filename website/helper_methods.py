@@ -89,16 +89,16 @@ def update_stock_data_in_db(app, update_even_if_holiday):
             if(not data_exists_in_db()):
                 fullfill_db()
             
-            if (not update_even_if_holiday and (is_holiday(datetime.now().strftime("%Y-%m-%d") or not is_working_hour(datetime.now().hour, datetime.now().minute)))):
+            if (not update_even_if_holiday and (check_is_holiday(datetime.now().strftime("%Y-%m-%d") or not is_working_hour(datetime.now().hour, datetime.now().minute)))):
                 return
             
             # last_working_day = datetime.now().strftime("%Y-%m-%d") # initially today
             # if( (datetime.now().hour < 10 or (datetime.now().hour == 10 and datetime.now().minute < 16))): # if morning hours, we will get the data of yesterday
             #     last_working_day = (parse(last_working_day) - timedelta(days=1)).strftime("%Y-%m-%d")
-            # if (is_holiday(last_working_day)): # if today is holiday, we will get the data of the last working day
+            # if (check_is_holiday(last_working_day)): # if today is holiday, we will get the data of the last working day
             #     last_working_day = get_last_work_day(last_working_day)
             # one_day_earlier = (parse(last_working_day) - timedelta(days=1)).strftime("%Y-%m-%d")
-            # if(is_holiday(one_day_earlier)):
+            # if(check_is_holiday(one_day_earlier)):
             #     one_day_earlier = get_last_work_day(one_day_earlier) # for one day, we will return the difference between the last working day and the working day before it
             # today = datetime.now().strftime("%Y-%m-%d")
 
@@ -176,7 +176,7 @@ def get_next_work_day(date):
     if parse(date) > datetime.now():
         raise ValueError("ERROR: The given date is later than today.")
     
-    while is_holiday(date):
+    while check_is_holiday(date):
         date = (parse(date) + timedelta(days=1)).strftime("%Y-%m-%d")
     return date
 
@@ -189,12 +189,12 @@ def get_last_work_day(date):
 
     """
 
-    while is_holiday(date):
+    while check_is_holiday(date):
         date = (parse(date) - timedelta(days=1)).strftime("%Y-%m-%d")
     return date
 
 
-def is_holiday(date):
+def check_is_holiday(date):
     """
     Check if the given date is a holiday.
     ##### please use string format "yyyy-MM-dd"
@@ -209,7 +209,7 @@ def is_holiday(date):
     
     does_date_exist = Holidays.does_date_exist(date)
     if(does_date_exist):
-        return Holidays.is_holiday(date)
+        return Holidays.check_is_holiday(date)
     does_xu100_data_exist = check_is_holiday_from_xu100(date)
     if(does_xu100_data_exist):
         Holidays.add(Holidays(date=date, is_holiday=False))
@@ -237,7 +237,7 @@ def check_is_holiday_from_xu100(date):
 
 # region Tests
 
-def test_is_holiday():
+def test_check_is_holiday():
     dates_and_expected_results = [
         ("2024-04-10", True),
         ("2024-04-11", True),
@@ -252,6 +252,6 @@ def test_is_holiday():
         ("2024-04-07", True)
        ]
     for date, expected_result in dates_and_expected_results:
-        assert is_holiday(date) == expected_result
+        assert check_is_holiday(date) == expected_result
 
 #endregion

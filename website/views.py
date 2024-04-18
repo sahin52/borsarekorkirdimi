@@ -76,8 +76,22 @@ def to_dict(stock):
 
 @views.route('/data-ad6a65b1-544b-415c-ac85-794c2c8f22e3')
 def data():
+    is_stock_wanted = request.args.get('stock', default=False, type=bool)
+    is_holiday_wanted = request.args.get('holiday', default=False, type=bool)
     stocks = StockData.query.all()
     holidays = Holidays.query.all()
+    if( is_stock_wanted):
+        stocks = StockData.query.all()
+        return jsonify({
+            'stock': [to_dict(stock) for stock in stocks]
+        })
+    if( is_holiday_wanted):
+        holidays = Holidays.query.all()
+        return jsonify({
+            'holidays': [to_dict(holiday) for holiday in holidays]
+        })
+    
+
     return jsonify({
         'stock': [to_dict(stock) for stock in stocks],
         'holidays': [to_dict(holiday) for holiday in holidays]
