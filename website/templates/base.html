@@ -80,12 +80,15 @@
           {% endif %}
         </h3>
         <h6>Şimdi BIST100 = {{ data["current_xu100"]|round(2) }}</h6>
-        <h5>Güniçi Rekor BIST100 = {{ data["todays_high_xu100"]|round(2) }}</h5>
+        <h5>Güniçi Rekor BIST100 = {{ data["todays_high_xu100"]|round(2) }} ({{data['date_of_todays_high']}})</h5>
         <h4>Tüm zamanlar Rekor BIST100 = {{ data["all_time_high"]|round(2) }} ( {{ data["date_of_all_time_high"] }} )</h4>
         <div>
           <h1>Borsada En Yükselen/Düşen Hisseler</h1>
           
           <script>
+            window.onload = function() {
+              document.getElementById('table-month-col').click();
+            };
           $(document).ready(function() {
               var asc = true;
               $('.sortable').click(function() {
@@ -103,7 +106,7 @@
                     $.each(data, function (i, item) {
                       var row =
                         "<tr><td>" +
-                        item.stock_name +
+                        item.stock_name.replace('.IS','') +
                         "</td><td>" +
                         new Date(item.date)?.toISOString().slice(0, 10) +
                         "</td><td>" +
@@ -138,12 +141,12 @@
           <table id="stockTable">
             <thead>
               <tr>
-                  <th class="sortable" data-sort="stock_name">Stock Name</th>
-                  <th class="sortable" data-sort="date">Date</th>
-                  <th class="sortable" data-sort="close">Close</th>
+                  <th class="sortable" data-sort="stock_name">Hisse</th>
+                  <th class="sortable" data-sort="date">Tarih</th>
+                  <th class="sortable" data-sort="close">Son Fiyat</th>
                   <th class="sortable" data-sort="increase_1d">Gün</th>
                   <th class="sortable" data-sort="increase_1w">Hafta</th>
-                  <th class="sortable" data-sort="increase_1m">Ay</th>
+                  <th class="sortable" id="table-month-col" data-sort="increase_1m">Ay</th>
                   <th class="sortable" data-sort="increase_3m">3 Ay</th>
                   <th class="sortable" data-sort="increase_6m">6 Ay</th>
                   <th class="sortable" data-sort="increase_1y">1 Yıl</th>

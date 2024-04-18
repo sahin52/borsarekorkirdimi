@@ -3,6 +3,23 @@ from sqlalchemy import DateTime
 
 db = SQLAlchemy()
 
+class XU100(db.Model):
+    __tablename__ = 'XU100'
+    xu100_id = db.Column(db.Integer, primary_key=True)
+    
+    latest_update_date = db.Column(db.DateTime)
+    latest_price = db.Column(db.Float)
+    latest_price_date = db.Column(db.String) # in yyyy-MM-dd format
+
+    last_record = db.Column(db.Float)
+    last_record_date = db.Column(db.String)
+    todays_highest_price = db.Column(db.Float)
+    
+    @classmethod
+    def add(cls, xu100):
+        db.session.add(xu100)
+        db.session.commit()
+
 class StockData(db.Model):
     __tablename__ = 'StockData'
     data_id = db.Column(db.Integer, primary_key=True)

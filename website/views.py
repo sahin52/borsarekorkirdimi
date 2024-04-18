@@ -3,44 +3,30 @@ import yfinance as yf
 import json 
 from datetime import datetime, timedelta
 from flask import current_app
-from website.helper_methods import update_stock_data_in_db
-from .models import StockData, db, Holidays
+from website.helper_methods import fullfill_db, update_stock_data_in_db
+from .models import XU100, StockData, db, Holidays
 from sqlalchemy import desc, asc, not_
 
 views = Blueprint('views', __name__)
 
-@views.route('/')
-def home():
-    def get_xu100_data():
-        # Get current xu100 value
-        xu100 = yf.Ticker('XU100.IS')
-        xu100history = xu100.history(period='1d')
-        current_xu100 = xu100history['Close'].iloc[-1]
-        # Get the highest value of xu100history['Close']
-        highest_xu100_value = xu100history['Close'].max()
-        
-        # Get today's highest xu100 value
-        todays_high_xu100 = xu100history['High'].iloc[-1]
-        # Find the date of the highest xu100 value
-        date_of_highest_xu100 = xu100history[xu100history['Close'] == highest_xu100_value].index[0].strftime('%Y-%m-%d')
-        # Get highest xu100 value ever
-        
-         # Read the all-time high from the JSON file
-        with open('db.json', 'r') as file:
-            data = json.load(file)
-            all_time_high = data['allTimeHigh']
-            date_of_all_time_high = data['dateOfAllTimeHigh']
-        # If today's high is greater than the all-time high, update the JSON file
-        if highest_xu100_value > all_time_high:
-            all_time_high = highest_xu100_value
-            date_of_all_time_high = date_of_highest_xu100
-        return {
-            'current_xu100': current_xu100,
-            'todays_high_xu100': todays_high_xu100,
-            'all_time_high': all_time_high,
-            'date_of_all_time_high': date_of_all_time_high
-        }
+def get_xu100_data():
+    # Get current xu100 value
+    latest_res = XU100.query.order_by(XU100.latest_update_date.desc()).first()
+    if(latest_res is None):
+        fullfill_db()
+    latest_res = XU100.query.order_by(XU100.latest_update_date.desc()).first()
     
+    return {
+        'current_xu100': latest_res.latest_price,
+        'todays_high_xu100': latest_res.todays_highest_price,
+        'date_of_todays_high': latest_res.latest_price_date,
+        'all_time_high': latest_res.last_record,
+        'date_of_all_time_high': latest_res.last_record_date,
+    }
+
+
+@views.route('/')
+def home():    
     return render_template("base.html",data = get_xu100_data())
 
 @views.route('/dolar-bazinda')

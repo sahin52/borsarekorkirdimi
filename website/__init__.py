@@ -12,7 +12,7 @@ load_dotenv()
 
 class Config:
     SCHEDULER_API_ENABLED = True
-    SQLALCHEMY_DATABASE_URI = os.getenv('FLASK_SQLITE_PATH') or 'sqlite:///:memory:'
+    SQLALCHEMY_DATABASE_URI = os.getenv('FLASK_SQLITE_PATH_FOR_DEV_ENV') or 'sqlite:///:memory:'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 def create_app():
