@@ -84,10 +84,12 @@
         <h6>Şimdi BIST100 = {{ data["current_xu100"]|round(2) }} ({{data['date_of_todays_high']}})</h6>
         <h5>Güniçi Rekor BIST100 = {{ data["todays_high_xu100"]|round(2) }} </h5>
         <h4>Tüm zamanlar Rekor BIST100 = {{ data["all_time_high"]|round(2) }} ( {{ data["date_of_all_time_high"] }} )</h4>
+        {#
         <div>
           <h1>Borsada En Yükselen/Düşen Hisseler</h1>
           
           <script>
+/*             
             window.onload = function() {
               document.getElementById('table-month-col').click();
             };
@@ -138,7 +140,7 @@
                       clickedElement.append(asc ? ' ↓' : ' ↑'); // Use the stored clicked element
                   });
               });
-          });
+          }); */
           </script>
           <table id="stockTable">
             <thead>
@@ -162,6 +164,7 @@
 
           <p>*Veriler teyit edilmelidir, bu verilere dayanarak yapılan işlemlerden sorumluluk kabul edilmemektedir</p>
         </div>
+        #}
         {# < div>
           <h1>Altın ve Döviz Kurları</h1>
           <table>

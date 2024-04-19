@@ -87,31 +87,31 @@ def data():
         'holidays': [to_dict(holiday) for holiday in holidays]
     })
 
-@views.route('/stock-increase-rate', methods=['GET'])
-def get_stock_increase_rates():
-    take = request.args.get('take', default=1, type=int)
-    page_size = request.args.get('page_size', default=10, type=int)
-    is_asc = request.args.get('asc')
-    sort = request.args.get('sort', default='increase_1d', type=str)
+# @views.route('/stock-increase-rate', methods=['GET'])
+# def get_stock_increase_rates():
+#     take = request.args.get('take', default=1, type=int)
+#     page_size = request.args.get('page_size', default=10, type=int)
+#     is_asc = request.args.get('asc')
+#     sort = request.args.get('sort', default='increase_1d', type=str)
 
-    if StockData.query.first() is None:
-        update_stock_data_in_db(current_app)
+#     if StockData.query.first() is None:
+#         update_stock_data_in_db(current_app)
 
-
-    
 
     
-    query = StockData.query.filter(StockData.date == datetime.now().date().strftime('%Y-%m-%d'))
-    query = query.filter(not_(getattr(StockData, sort).is_(None)))
 
-    if is_asc in ['true', '1', 'True']:
-        query = query.order_by(asc(sort))
-    else:
-        query = query.order_by(desc(sort))
+    
+#     query = StockData.query.filter(StockData.date == datetime.now().date().strftime('%Y-%m-%d'))
+#     query = query.filter(not_(getattr(StockData, sort).is_(None)))
 
-    stocks = query.paginate(page=take, per_page = page_size, error_out=False).items
+#     if is_asc in ['true', '1', 'True']:
+#         query = query.order_by(asc(sort))
+#     else:
+#         query = query.order_by(desc(sort))
 
-    return jsonify([
-            to_dict(stock)
-            for stock in stocks
-        ])
+#     stocks = query.paginate(page=take, per_page = page_size, error_out=False).items
+
+#     return jsonify([
+#             to_dict(stock)
+#             for stock in stocks
+#         ])
