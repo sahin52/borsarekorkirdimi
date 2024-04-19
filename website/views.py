@@ -13,6 +13,15 @@ def get_xu100_data():
     # Get current xu100 value
     latest_res = XU100.query.order_by(XU100.latest_update_date.desc()).first()
     
+    if latest_res is None:
+        return {
+            'current_xu100': 0,
+            'todays_high_xu100': 0,
+            'date_of_todays_high': None,
+            'all_time_high': 0,
+            'date_of_all_time_high': None,
+        }
+
     return {
         'current_xu100': latest_res.latest_price,
         'todays_high_xu100': latest_res.todays_highest_price,

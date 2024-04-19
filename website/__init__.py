@@ -17,6 +17,12 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 def create_app():
+    if(os.path.exists('db.sqlite3')):
+        try:
+            os.remove('db.sqlite3')
+            print("REMOVED DB")
+        except:
+            pass
     app = Flask(__name__)
     app.config.from_object(Config)
     db.init_app(app)
