@@ -9,6 +9,11 @@ import traceback
 import threading
 from concurrent.futures import ThreadPoolExecutor
 
+
+def yfdownload(stocks, start, end):
+    print("LOG: Downloading data for", stocks[:5], "from", start, "to", end, "stack trace:", traceback.format_stack())
+    return yf.download(stocks, start=start, end=end, progress=False)
+
 def data_exists_in_db():
     """
     Check if the database has any data
@@ -20,7 +25,7 @@ lock = threading.Lock()
 
 def fetch_and_store_data(app, date, stocks):
     with app.app_context():
-        data = yf.download(stocks, start=date, end=(parse(date) + timedelta(days=1)).strftime("%Y-%m-%d"))
+        data = yfdownload(stocks, start=date, end=(parse(date) + timedelta(days=1)).strftime("%Y-%m-%d"))
         stock_datas = []
         for stock in stocks:
             stock_data = StockData(stock_name=stock)
@@ -92,7 +97,7 @@ def update_stock_data_in_db(app):
                 data_from_db_for_one_year_earlier = StockData.query.filter(StockData.date == one_year_earlier).all()
                 data_from_db_for_five_years_earlier = StockData.query.filter(StockData.date == five_years_earlier).all()
 
-                latest_data_from_yfinance = yf.download(stocks, start=last_working_day, end=(datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d"))
+                latest_data_from_yfinance = yfdownload(stocks, start=last_working_day, end=(datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d"))
                 
                 stock_datas = []
                 # save latest data to db
@@ -143,7 +148,7 @@ def update_xu100_in_db():
     #region XU100 RECORD
     one_year_earlier = get_last_work_day((datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"))
     # get the data of XU100
-    all_data = yf.download('XU100.IS', start=one_year_earlier, end=(datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d"))
+    all_data = yfdownload('XU100.IS', start=one_year_earlier, end=(datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d"))
     xu100_data = all_data['Close']
     # get date of the latest price
     latest_price_date = xu100_data.index[-1].strftime("%Y-%m-%d")
@@ -254,7 +259,7 @@ def check_is_holiday_from_xu100(date):
     xu100_from_db = StockData.query.filter(StockData.stock_name == "XU100.IS" and StockData.date == date)
     if xu100_from_db.first() is not None:
         return False
-    data = yf.download('XU100.IS', start=date, end=one_day_later)
+    data = yfdownload('XU100.IS', start=date, end=one_day_later)
     is_holiday = data.empty
     return is_holiday # If the data is empty, it means that the date is a holiday
 
