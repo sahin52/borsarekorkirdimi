@@ -25,17 +25,14 @@ def create_app():
             pass
     app = Flask(__name__)
     app.config.from_object(Config)
-    db.init_app(app)
-    with app.app_context():
-        db.create_all() # Create the database tables
-    
+    app = Flask(__name__)        
     # Get the apscheduler logger
     apscheduler_logger = logging.getLogger('apscheduler')
     # Set its level to ERROR
     apscheduler_logger.setLevel(logging.ERROR)
     
     scheduler = BackgroundScheduler()  # Corrected class name
-    scheduler.add_job(id='Scheduled task', func=update_stock_data_in_db, args=[app], trigger='interval', seconds=3)
+    scheduler.add_job(id='Scheduled task', func=update_stock_data_in_db, args=[app], trigger='interval', seconds=30)
     scheduler.start()
 
     from .views import views

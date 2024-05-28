@@ -3,3 +3,4 @@ venv/
 util/sqlite3.exe
 .env
 db.sqlite3
+cred.json

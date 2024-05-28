@@ -1,92 +1,55 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+import firebase_admin
+from firebase_admin import credentials, firestore
+
+cred = credentials.Certificate('cred.json')
+firebase_admin.initialize_app(cred)
+db = firestore.client()
 
 
-db = SQLAlchemy()
+class XU100:
+    @staticmethod
+    def add(xu100_data):
+        db.collection('XU100').add(xu100_data)
 
-class XU100(db.Model):
-    __tablename__ = 'XU100'
-    xu100_id = db.Column(db.Integer, primary_key=True)
-    
-    latest_update_date = db.Column(db.DateTime)
-    latest_price = db.Column(db.Float)
-    latest_price_date = db.Column(db.String) # in yyyy-MM-dd format
+class StockData:
+    @staticmethod
+    def add(stock_data):
+        db.collection('StockData').add(stock_data)
 
-    last_record = db.Column(db.Float)
-    last_record_date = db.Column(db.String)
-    todays_highest_price = db.Column(db.Float)
+    @staticmethod
+    def add_all(stocks_data):
+        for stock_data in stocks_data:
+            StockData.add(stock_data)
 
-    # date_of_all_time_high_usd = db.Column(db.String)
-    # all_time_high_usd = db.Column(db.Float)
-    
-    @classmethod
-    def add(cls, xu100):
-        db.session.add(xu100)
-        db.session.commit()
+class UpdateToDb:
+    @staticmethod
+    def set_latest_update():
+        db.collection('UpdateToDb').document('latest').set({'last_update': datetime.now()})
 
-class StockData(db.Model):
-    __tablename__ = 'StockData'
-    data_id = db.Column(db.Integer, primary_key=True)
-    stock_name = db.Column(db.String)
-    date = db.Column(db.String) # in yyyy-MM-dd format
-    # interval = db.Column(db.String)
-    close = db.Column(db.Float)
-    increase_1d = db.Column(db.Float)
-    increase_1w = db.Column(db.Float)
-    increase_1m = db.Column(db.Float)
-    increase_3m = db.Column(db.Float)
-    increase_6m = db.Column(db.Float)
-    increase_1y = db.Column(db.Float)
-    increase_5y = db.Column(db.Float)
-    
-    @classmethod
-    def add(cls, stock):
-        db.session.add(stock)
-        db.session.commit()
-    @classmethod
-    def add_all(cls, stocks):
-        db.session.add_all(stocks)
-        db.session.commit()
+    @staticmethod
+    def get_latest_update():
+        return db.collection('UpdateToDb').document('latest').get().to_dict()
 
-class UpdateToDb(db.Model):
-    data_id = db.Column(db.Integer, primary_key=True)
-    last_update = db.Column(db.DateTime)
+class Holidays:
+    @staticmethod
+    def add(holiday):
+        db.collection('Holidays').add(holiday)
 
-    @classmethod
-    def set_latest_update(cls):
-        latest_update = UpdateToDb.query.first()
-        if(latest_update is None):
-            latest_update = UpdateToDb(last_update = datetime.now())
-        db.session.add(latest_update)
-        db.session.commit()
+    @staticmethod
+    def add_all(holidays):
+        for holiday in holidays:
+            Holidays.add(holiday)
 
-    @classmethod
-    def get_latest_update(cls):
-        return UpdateToDb.query.first()
-    
-
-class Holidays(db.Model):
-    __tablename__ = 'Holidays'
-    holiday_id = db.Column(db.Integer, primary_key=True)
-
-    # date format: "yyyy-MM-dd"
-    date = db.Column(db.String)
-    is_holiday = db.Column(db.Boolean)
-    
-    @classmethod
-    def add(cls, holiday):
-        db.session.add(holiday)
-        db.session.commit()
-    @classmethod
-    def add_all(cls, holidays):
-        db.session.add_all(holidays)
-        db.session.commit()
-    @classmethod
-    def check_is_holiday(cls, date):
-        holiday = Holidays.query.filter(Holidays.date == date).first()
-        if holiday:
-            return holiday.is_holiday
+    @staticmethod
+    def check_is_holiday(date):
+        docs = db.collection('Holidays').where('date', '==', date).stream()
+        for doc in docs:
+            return doc.to_dict().get('is_holiday', False)
         return False
-    @classmethod
-    def does_date_exist(cls, date):
-        return Holidays.query.filter(Holidays.date == date).first() is not None
+
+    @staticmethod
+    def does_date_exist(date):
+        docs = db.collection('Holidays').where('date', '==', date).stream()
+        return any(docs)

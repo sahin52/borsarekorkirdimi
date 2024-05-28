@@ -8,7 +8,7 @@ import os
 import traceback
 import threading
 from concurrent.futures import ThreadPoolExecutor
-
+import pytz
 
 def yfdownload(stocks, start, end):
     print("LOG: Downloading data for", stocks[:5], "from", start, "to", end, "stack trace:")
@@ -19,10 +19,10 @@ def yfdownload(stocks, start, end):
 
 def data_exists_in_db():
     """
-    Check if the database has any data
+    Check if the Firestore database has any data
     """
-
-    return StockData.query.first() is not None
+    docs = db.collection('StockData').limit(1).stream()
+    return any(docs)
 
 lock = threading.Lock()
 
@@ -47,7 +47,7 @@ def update_stock_data_in_db(app):
             try:
                 if (data_exists_in_db() and not is_working_hour(datetime.now().hour, datetime.now().minute)):
                     return # if there is data and it is not working hour, let it go
-                if((UpdateToDb.get_latest_update() is not None) and UpdateToDb.get_latest_update().last_update > (datetime.now() - timedelta(minutes=15))):
+                if((UpdateToDb.get_latest_update() is not None) and UpdateToDb.get_latest_update()['last_update'] > (datetime.now(pytz.UTC) - timedelta(minutes=15))):
                     return # return if the latest update is within 15 minutes - only update every 15 minutes
                 update_xu100_in_db()
 
@@ -268,16 +268,15 @@ def update_xu100_in_db():
 
     # all_time_high_usd = 510.37 # HARD CODED, since it is so hard for this record to get broken, may update in 3 years
     # date_of_all_time_high_usd = "2013-05-17"
-    xu100 = XU100(latest_price_date=latest_price_date, 
-                last_record=highest_price, 
-                last_record_date=highest_price_date, 
-                latest_update_date=datetime.now(),
-                latest_price=latest_price,
-                todays_highest_price=todays_highest_price,
-                #   all_time_high_usd=all_time_high_usd,
-                #   date_of_all_time_high_usd=date_of_all_time_high_usd
-                )
-    XU100.add(xu100)
+    xu100_data = {
+        'latest_update_date': '2022-01-01T00:00:00Z',
+        'latest_price': 123.45,
+        'latest_price_date': '2022-01-01',
+        'last_record': 123.45,
+        'last_record_date': '2022-01-01',
+        'todays_highest_price': 123.45,
+    }
+    XU100.add(xu100_data)
 
 #endregion
 
