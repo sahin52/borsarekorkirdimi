@@ -6,14 +6,14 @@ from flask import current_app
 from website.helper_methods import update_stock_data_in_db
 from .models import XU100, StockData, db, Holidays
 from sqlalchemy import desc, asc, not_
+from firebase_admin import firestore
 
 views = Blueprint('views', __name__)
 
 def get_xu100_data():
     # Get current xu100 value
-    latest_res = XU100.query.order_by(XU100.latest_update_date.desc()).first()
-    
-    if latest_res is None:
+    latest_res = db.collection('XU100').order_by('latest_price_date', direction=firestore.Query.DESCENDING).limit(1).get()
+    if latest_res is None or len(latest_res) == 0:
         return {
             'current_xu100': 0,
             'todays_high_xu100': 0,
@@ -21,13 +21,13 @@ def get_xu100_data():
             'all_time_high': 0,
             'date_of_all_time_high': None,
         }
-
+    latest_res = latest_res[0].to_dict()
     return {
-        'current_xu100': latest_res.latest_price,
-        'todays_high_xu100': latest_res.todays_highest_price,
-        'date_of_todays_high': latest_res.latest_price_date,
-        'all_time_high': latest_res.last_record,
-        'date_of_all_time_high': latest_res.last_record_date,
+        'current_xu100': latest_res['latest_price'],
+        'todays_high_xu100': latest_res['todays_highest_price'],
+        'date_of_todays_high': latest_res['latest_price_date'],
+        'all_time_high': latest_res['highest_price'],
+        'date_of_all_time_high': latest_res['highest_price_date'],
     }
 
 
