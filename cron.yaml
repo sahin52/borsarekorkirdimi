@@ -1,0 +1,6 @@
+cron:
+- description: "update db job"
+  url: https://borsarekorkirdimi.com/run-cron
+  schedule: "*/15 10-18 * * MON-FRI"
+
+# Cron kullanma sebebin: normalde cronjoblar duruyor, uygulamaya sadece istek gelirse tekrar başlıyor
