@@ -66,7 +66,7 @@ def to_dict(stock):
 @views.route('/run-cron')
 def run_cron():
     print('Running Cron Job')
-    return 'Cron job is run'
+    return { "message": 'Cron job is run'}
 @views.route('/data-ad6a65b1-544b-415c-ac85-794c2c8f22e3')
 def data():
     is_stock_wanted = request.args.get('stock', default=False, type=bool)
